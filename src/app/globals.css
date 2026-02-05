@@ -137,6 +137,50 @@
   mix-blend-mode: overlay;
 }
 
+/* Portal flicker animation */
+@keyframes portal-flicker {
+  0%, 100% { opacity: 1; }
+  4% { opacity: 0.82; }
+  8% { opacity: 1; }
+  12% { opacity: 0.88; }
+  16% { opacity: 1; }
+  48% { opacity: 0.94; }
+  52% { opacity: 0.78; }
+  54% { opacity: 1; }
+  78% { opacity: 0.9; }
+  82% { opacity: 1; }
+}
+.portal-flicker {
+  animation: portal-flicker 3s ease-in-out infinite;
+}
+
+/* Subliminal flashes — mostly OFF, single-frame pops every ~0.8s */
+@keyframes portal-entrance {
+  0%   { opacity: 0; }
+  /* Flash 1 */
+  29%  { opacity: 0; }
+  30%  { opacity: 0.85; }
+  31%  { opacity: 0; }
+  /* Flash 2 */
+  52%  { opacity: 0; }
+  53%  { opacity: 1; }
+  54%  { opacity: 0; }
+  /* Flash 3 — quick double-tap */
+  74%  { opacity: 0; }
+  75%  { opacity: 0.6; }
+  76%  { opacity: 0; }
+  77%  { opacity: 0.95; }
+  78%  { opacity: 0; }
+  /* Flash 4 */
+  93%  { opacity: 0; }
+  94%  { opacity: 0.75; }
+  95%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+.portal-entrance {
+  animation: portal-entrance 3s linear infinite;
+}
+
 /* Radial gradient utility */
 .bg-gradient-radial {
   background: radial-gradient(circle at center, var(--tw-gradient-from), var(--tw-gradient-to));

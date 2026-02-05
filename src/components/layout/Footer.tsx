@@ -17,11 +17,12 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <Image
-                src="/logos/graphene-gangway-transparent.png"
+                src="/logos/gg-mark.png"
                 alt="Graphene Gangway"
-                width={36}
-                height={36}
-                className="h-9 w-9 object-contain"
+                width={304}
+                height={467}
+                quality={100}
+                className="h-9 w-auto object-contain"
               />
               <span className="font-[family-name:var(--font-display)] text-lg tracking-wide text-cyan-neon">
                 Graphene Gangway
@@ -38,15 +39,27 @@ export function Footer() {
               Navigation
             </h3>
             <nav className="flex flex-col gap-2">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-sm text-ice-white/50 transition-colors hover:text-cyan-neon"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {NAV_LINKS.flatMap((link) =>
+                link.children
+                  ? link.children.map((child) => (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        className="text-sm text-ice-white/50 transition-colors hover:text-cyan-neon"
+                      >
+                        {child.label}
+                      </Link>
+                    ))
+                  : [
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className="text-sm text-ice-white/50 transition-colors hover:text-cyan-neon"
+                      >
+                        {link.label}
+                      </Link>,
+                    ]
+              )}
             </nav>
           </div>
 

@@ -75,11 +75,12 @@ export default function LoginPage() {
           <div className="relative">
             <div className="absolute inset-0 rounded-full bg-cyan-neon/20 blur-xl" />
             <Image
-              src="/logos/graphene-gangway-transparent.png"
+              src="/logos/gg-mark.png"
               alt="Graphene Gangway"
-              width={80}
-              height={80}
-              className="relative z-10"
+              width={304}
+              height={467}
+              quality={100}
+              className="relative z-10 w-20 h-auto object-contain"
             />
           </div>
         </div>

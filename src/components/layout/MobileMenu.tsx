@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { X, Instagram, Twitter, Facebook, Youtube } from "lucide-react";
+import { X, ChevronDown, Instagram, Twitter, Facebook, Youtube } from "lucide-react";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
+import { cn } from "@/lib/utils";
 import { NAV_LINKS, SOCIAL_LINKS } from "@/lib/constants";
 
 interface MobileMenuProps {
@@ -49,6 +51,13 @@ const socialIcons = [
 ];
 
 export function MobileMenu({ open, onClose }: MobileMenuProps) {
+  const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
+
+  function handleClose() {
+    setExpandedGroup(null);
+    onClose();
+  }
+
   return (
     <AnimatePresence>
       {open && (
@@ -61,7 +70,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
             initial="hidden"
             animate="visible"
             exit="exit"
-            onClick={onClose}
+            onClick={handleClose}
           />
 
           {/* Menu Panel */}
@@ -77,7 +86,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
             <div className="flex justify-end p-6">
               <button
                 type="button"
-                onClick={onClose}
+                onClick={handleClose}
                 className="rounded-full p-2 text-ice-white/70 transition-colors hover:text-cyan-neon"
                 aria-label="Close menu"
               >
@@ -88,14 +97,65 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
             {/* Navigation Links */}
             <nav className="flex flex-1 flex-col items-center justify-center gap-6">
               {NAV_LINKS.map((link) => (
-                <motion.div key={link.href} variants={linkVariants}>
-                  <Link
-                    href={link.href}
-                    onClick={onClose}
-                    className="text-3xl font-[family-name:var(--font-display)] tracking-wider text-ice-white transition-colors hover:text-cyan-neon"
-                  >
-                    {link.label}
-                  </Link>
+                <motion.div
+                  key={link.label}
+                  variants={linkVariants}
+                  className="flex flex-col items-center"
+                >
+                  {link.children ? (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setExpandedGroup(
+                            expandedGroup === link.label ? null : link.label
+                          )
+                        }
+                        className="flex items-center gap-2 text-3xl font-[family-name:var(--font-display)] tracking-wider text-ice-white transition-colors hover:text-cyan-neon"
+                      >
+                        {link.label}
+                        <ChevronDown
+                          className={cn(
+                            "h-6 w-6 transition-transform duration-200",
+                            expandedGroup === link.label && "rotate-180"
+                          )}
+                        />
+                      </button>
+
+                      <AnimatePresence>
+                        {expandedGroup === link.label && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.2, ease: "easeOut" }}
+                            className="overflow-hidden"
+                          >
+                            <div className="mt-3 flex flex-col items-center gap-3">
+                              {link.children.map((child) => (
+                                <Link
+                                  key={child.href}
+                                  href={child.href}
+                                  onClick={handleClose}
+                                  className="text-lg text-ice-white/50 transition-colors hover:text-cyan-neon"
+                                >
+                                  {child.label}
+                                </Link>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      onClick={handleClose}
+                      className="text-3xl font-[family-name:var(--font-display)] tracking-wider text-ice-white transition-colors hover:text-cyan-neon"
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </motion.div>
               ))}
             </nav>

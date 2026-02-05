@@ -9,15 +9,35 @@ export const SITE_CONFIG = {
   location: "North Lawndale, Chicago",
 } as const;
 
-export const NAV_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/yn-academy", label: "YN Academy" },
-  { href: "#services", label: "Services" },
-  { href: "#outreach", label: "Outreach" },
-  { href: "#merch", label: "Merch" },
-  { href: "#about", label: "About" },
+import type { NavLink } from "./shared/types";
+
+export const NAV_LINKS: NavLink[] = [
+  { href: "/yn-academy", label: "Programs" },
+  {
+    href: "/services",
+    label: "Offerings",
+    children: [
+      {
+        href: "/services",
+        label: "Tech Services",
+        description: "Web development, IT support, and digital solutions",
+      },
+      {
+        href: "/outreach",
+        label: "Community Outreach",
+        description: "Programs connecting residents to resources",
+      },
+      {
+        href: "/merch",
+        label: "Merch",
+        description: "Rep the movement — apparel and accessories",
+      },
+    ],
+  },
+  { href: "/blog", label: "Blog" },
+  { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
-] as const;
+];
 
 export const SOCIAL_LINKS = {
   instagram: "#",

@@ -20,11 +20,13 @@ export const metadata: Metadata = {
     title: SEO_DEFAULTS.title,
     description: SEO_DEFAULTS.description,
     url: SITE_CONFIG.url,
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Graphene Gangway" }],
   },
   twitter: {
     card: "summary_large_image",
     title: SEO_DEFAULTS.title,
     description: SEO_DEFAULTS.description,
+    images: ["/og-image.png"],
   },
   metadataBase: new URL(SITE_CONFIG.url),
 };

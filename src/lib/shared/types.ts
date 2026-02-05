@@ -30,7 +30,14 @@ export interface SessionData {
   isAdmin: boolean;
 }
 
+export interface NavChild {
+  href: string;
+  label: string;
+  description: string;
+}
+
 export interface NavLink {
   href: string;
   label: string;
+  children?: NavChild[];
 }
