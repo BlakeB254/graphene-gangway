@@ -1,4 +1,5 @@
 import { HeroPortal } from "@/components/home/HeroPortal";
+import { NorthLawndaleCallout } from "@/components/home/NorthLawndaleCallout";
 import { MissionSection } from "@/components/home/MissionSection";
 import { ThreePortals } from "@/components/home/ThreePortals";
 import { ImpactCounters } from "@/components/home/ImpactCounters";
@@ -13,6 +14,7 @@ export default function Home() {
     <>
       <FloatingOrbs />
       <HeroPortal />
+      <NorthLawndaleCallout />
       <ScrollMarquee text="COMMUNITY" direction="left" />
       <GlowDivider />
       <MissionSection />
