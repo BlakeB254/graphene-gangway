@@ -37,6 +37,7 @@ export const NAV_LINKS: NavLink[] = [
   { href: "/blog", label: "Blog" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
+  { href: "/yna", label: "YNA Portal" },
 ];
 
 export const SOCIAL_LINKS = {

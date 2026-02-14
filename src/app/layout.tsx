@@ -1,8 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { bebasNeue, caveat, outfit, jetbrainsMono } from "@/lib/fonts";
 import { SITE_CONFIG, SEO_DEFAULTS } from "@/lib/constants";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
 import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
 import "./globals.css";
 
@@ -51,9 +49,7 @@ export default function RootLayout({
         <SchemaMarkup />
       </head>
       <body className="min-h-screen bg-dark-deep text-ice-white">
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        {children}
       </body>
     </html>
   );

@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# standalone yna portal (integrated into Next.js app)
+/yna-portal
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
