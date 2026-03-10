@@ -1,6 +1,7 @@
 "use client";
 
 import { SidewalkCracks } from "./SidewalkCracks";
+import { GraffitiTags } from "./GraffitiTags";
 
 export function UrbanTextures() {
   return (
@@ -9,6 +10,7 @@ export function UrbanTextures() {
       aria-hidden="true"
     >
       <SidewalkCracks />
+      <GraffitiTags />
     </div>
   );
 }
