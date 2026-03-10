@@ -7,268 +7,366 @@ export function SidewalkCracks() {
       fill="none"
     >
       <defs>
-        {/* Subtle glow filter for main fracture lines */}
         <filter id="crack-glow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
+          <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
+        {/* Roughen filter — adds slight displacement for organic feel */}
+        <filter id="roughen" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="3" result="noise" seed="2" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" />
+        </filter>
       </defs>
 
       {/* ═══════════════════════════════════════════════
-          FRACTURE SYSTEM 1 — Left third of viewport
-          Main vertical crack with branching network
+          CONCRETE SLAB GRID — expansion joints
+          6 columns × 4 rows, slightly weathered lines
           ═══════════════════════════════════════════════ */}
 
-      {/* Deep shadow layer (wider, dimmer — gives depth) */}
-      <path
-        d="M165,-10 C170,30 180,65 175,110 C168,160 185,200 192,260
-           C198,320 178,380 172,440 C166,510 182,570 190,640
-           C196,700 174,760 170,820 C165,880 180,940 185,1000
-           C188,1040 178,1060 175,1090"
-        stroke="rgba(0,240,255,0.06)"
-        strokeWidth="6"
-        strokeLinecap="round"
-      />
-      {/* Main fracture (organic bezier curves) */}
-      <path
-        d="M165,-10 C170,30 180,65 175,110 C168,160 185,200 192,260
-           C198,320 178,380 172,440 C166,510 182,570 190,640
-           C196,700 174,760 170,820 C165,880 180,940 185,1000
-           C188,1040 178,1060 175,1090"
-        stroke="rgba(0,240,255,0.22)"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        filter="url(#crack-glow)"
-      />
-      {/* Parallel stress line (runs alongside main fracture) */}
-      <path
-        d="M158,80 C162,120 175,150 172,200 C168,250 180,290 184,340
-           C186,370 176,400 172,430"
-        stroke="rgba(0,240,255,0.10)"
-        strokeWidth="0.8"
-        strokeLinecap="round"
-      />
+      <g opacity="1" filter="url(#roughen)">
+        {/* Horizontal joints */}
+        <line x1="0" y1="270" x2="1920" y2="270" stroke="rgba(0,240,255,0.055)" strokeWidth="1.2" />
+        <line x1="0" y1="540" x2="1920" y2="540" stroke="rgba(0,240,255,0.06)" strokeWidth="1.2" />
+        <line x1="0" y1="810" x2="1920" y2="810" stroke="rgba(0,240,255,0.05)" strokeWidth="1.2" />
 
-      {/* Branch 1A — horizontal, curves right from main at y≈260 */}
-      <path
-        d="M192,260 C230,258 270,265 320,255 C370,245 420,258 480,252
-           C530,248 570,255 610,248"
-        stroke="rgba(0,240,255,0.16)"
-        strokeWidth="1.2"
-        strokeLinecap="round"
-      />
-      {/* Sub-branch from 1A */}
-      <path
-        d="M380,253 C385,230 395,210 405,190 C412,175 408,158 415,140"
-        stroke="rgba(0,240,255,0.10)"
-        strokeWidth="0.8"
-        strokeLinecap="round"
-      />
-      {/* Micro-branches from 1A */}
-      <path d="M480,252 C490,240 500,235 510,225" stroke="rgba(0,240,255,0.08)" strokeWidth="0.6" strokeLinecap="round" />
-      <path d="M320,255 C325,268 330,280 340,290" stroke="rgba(0,240,255,0.07)" strokeWidth="0.5" strokeLinecap="round" />
+        {/* Vertical joints */}
+        <line x1="320" y1="0" x2="320" y2="1080" stroke="rgba(0,240,255,0.05)" strokeWidth="1" />
+        <line x1="640" y1="0" x2="640" y2="1080" stroke="rgba(0,240,255,0.055)" strokeWidth="1" />
+        <line x1="960" y1="0" x2="960" y2="1080" stroke="rgba(0,240,255,0.06)" strokeWidth="1" />
+        <line x1="1280" y1="0" x2="1280" y2="1080" stroke="rgba(0,240,255,0.05)" strokeWidth="1" />
+        <line x1="1600" y1="0" x2="1600" y2="1080" stroke="rgba(0,240,255,0.055)" strokeWidth="1" />
 
-      {/* Branch 1B — left diagonal from main at y≈640 */}
-      <path
-        d="M190,640 C160,645 130,638 95,648 C60,658 30,650 -10,655"
-        stroke="rgba(0,240,255,0.13)"
-        strokeWidth="1"
-        strokeLinecap="round"
-      />
-
-      {/* Branch 1C — short spur right at y≈440 */}
-      <path
-        d="M172,440 C200,445 230,438 260,448 C285,455 305,448 330,452"
-        stroke="rgba(0,240,255,0.11)"
-        strokeWidth="0.8"
-        strokeLinecap="round"
-      />
-
-      {/* Spall chips along main fracture */}
-      <ellipse cx="175" cy="180" rx="4" ry="2" fill="rgba(0,240,255,0.08)" transform="rotate(15,175,180)" />
-      <ellipse cx="185" cy="350" rx="3" ry="1.5" fill="rgba(0,240,255,0.06)" transform="rotate(-20,185,350)" />
-      <ellipse cx="170" cy="550" rx="5" ry="2" fill="rgba(0,240,255,0.07)" transform="rotate(8,170,550)" />
-      <ellipse cx="178" cy="760" rx="3" ry="2" fill="rgba(0,240,255,0.05)" transform="rotate(-12,178,760)" />
+        {/* Scored mid-slab lines (some slabs have center scoring) */}
+        <line x1="480" y1="0" x2="480" y2="270" stroke="rgba(0,240,255,0.025)" strokeWidth="0.6" />
+        <line x1="1120" y1="540" x2="1120" y2="810" stroke="rgba(0,240,255,0.025)" strokeWidth="0.6" />
+        <line x1="0" y1="135" x2="320" y2="135" stroke="rgba(0,240,255,0.02)" strokeWidth="0.6" />
+        <line x1="640" y1="675" x2="960" y2="675" stroke="rgba(0,240,255,0.025)" strokeWidth="0.6" />
+      </g>
 
 
       {/* ═══════════════════════════════════════════════
-          FRACTURE SYSTEM 2 — Center of viewport
-          Wandering crack with web-pattern branching
+          MAIN CRACK A — originates from joint intersection
+          at (640, 270), runs diagonally down-right across
+          two slabs, jagged short segments
           ═══════════════════════════════════════════════ */}
 
-      {/* Deep shadow */}
+      {/* Variable-width filled crack (traces both edges) */}
       <path
-        d="M850,-10 C845,50 835,100 842,170 C848,240 828,310 822,380
-           C816,450 838,520 845,590 C850,650 832,720 826,790
-           C820,860 840,930 845,1000 C848,1050 838,1070 835,1090"
-        stroke="rgba(0,240,255,0.05)"
-        strokeWidth="5"
-        strokeLinecap="round"
+        d="M638,268
+           l3,-8 l-1,-11 l4,-9 l-2,-12 l3,-10 l-1,-9 l4,-11 l-2,-10
+           l3,-9 l-1,-11 l5,-10 l-3,-12 l4,-9 l-1,-10 l3,-11 l-2,-9
+           l4,-10 l-1,-11 l3,-9 l-2,-12 l5,-8 l-3,-11 l4,-10 l-1,-9
+           l3,-11
+           l3,1
+           l-3,11 l1,9 l-4,10 l3,11 l-5,8 l2,12 l-3,9 l1,11 l-4,10
+           l2,9 l-3,11 l1,10 l-4,9 l3,12 l-5,10 l1,11 l-3,9 l2,10
+           l-4,11 l1,9 l-3,10 l2,12 l-4,9 l1,11 l-3,8
+           Z"
+        fill="rgba(0,240,255,0.18)"
+        filter="url(#crack-glow)"
       />
-      {/* Main fracture */}
+      {/* Shadow underneath */}
       <path
-        d="M850,-10 C845,50 835,100 842,170 C848,240 828,310 822,380
-           C816,450 838,520 845,590 C850,650 832,720 826,790
-           C820,860 840,930 845,1000 C848,1050 838,1070 835,1090"
-        stroke="rgba(0,240,255,0.20)"
-        strokeWidth="1.5"
-        strokeLinecap="round"
+        d="M638,268
+           l3,-8 l-1,-11 l4,-9 l-2,-12 l3,-10 l-1,-9 l4,-11 l-2,-10
+           l3,-9 l-1,-11 l5,-10 l-3,-12 l4,-9 l-1,-10 l3,-11 l-2,-9
+           l4,-10 l-1,-11 l3,-9 l-2,-12 l5,-8 l-3,-11 l4,-10 l-1,-9
+           l3,-11
+           l5,2
+           l-3,11 l1,9 l-4,10 l3,11 l-5,8 l2,12 l-3,9 l1,11 l-4,10
+           l2,9 l-3,11 l1,10 l-4,9 l3,12 l-5,10 l1,11 l-3,9 l2,10
+           l-4,11 l1,9 l-3,10 l2,12 l-4,9 l1,11 l-3,8
+           Z"
+        fill="rgba(0,240,255,0.04)"
+      />
+
+      {/* Crack A continues below the joint, running down-right */}
+      <path
+        d="M642,272
+           l4,9 l-1,12 l3,8 l-2,11 l5,10 l-1,9 l3,12 l-2,8
+           l4,11 l-1,9 l3,10 l-3,12 l5,8 l-1,11 l3,9 l-2,10
+           l4,12 l-1,8 l3,11 l-2,9 l5,10 l-1,12 l3,8 l-2,11
+           l4,9 l-1,10 l3,12 l-2,8 l5,11 l-1,9
+           l3,1
+           l1,-9 l-5,-11 l2,-8 l-3,-12 l1,-10 l-4,-9 l2,-8 l-3,-12
+           l1,-11 l-5,-10 l2,-9 l3,-12 l-3,-8 l1,-10 l-4,-11 l2,-9
+           l-4,-12 l1,-8 l-3,-10 l2,-12 l-5,-8 l1,-11 l-3,-9 l2,-12
+           l-4,-8 l1,-11 l-3,-9
+           Z"
+        fill="rgba(0,240,255,0.16)"
         filter="url(#crack-glow)"
       />
 
-      {/* Web pattern — horizontal branches creating connected web */}
-      {/* Branch left at y≈380 */}
+      {/* Branch from crack A at ~y=200, runs left */}
       <path
-        d="M822,380 C790,375 750,385 710,378 C670,372 630,382 590,375
-           C560,370 530,378 500,372"
-        stroke="rgba(0,240,255,0.14)"
-        strokeWidth="1"
-        strokeLinecap="round"
-      />
-      {/* Branch right at y≈380 — connects toward system 3 */}
-      <path
-        d="M822,380 C870,385 920,375 970,382 C1020,388 1070,378 1120,385
-           C1160,390 1200,382 1240,388"
+        d="M635,200 l-9,2 l-11,-1 l-10,3 l-12,-2 l-9,4 l-11,-1 l-10,3
+           l-12,-2 l-9,3 l-11,-1 l-10,4 l-12,-2 l-9,3 l-11,-1 l-10,2
+           l-12,-3 l-9,4 l-11,-1 l-10,3"
         stroke="rgba(0,240,255,0.12)"
         strokeWidth="1"
         strokeLinecap="round"
       />
-      {/* Vertical connector between horizontal branches */}
+      {/* Thinning sub-branch */}
       <path
-        d="M710,378 C715,420 708,460 712,500 C716,540 710,575 714,610"
-        stroke="rgba(0,240,255,0.09)"
-        strokeWidth="0.8"
+        d="M540,205 l-5,-8 l-3,-9 l-4,-10 l-2,-8 l-5,-9 l-3,-11"
+        stroke="rgba(0,240,255,0.07)"
+        strokeWidth="0.6"
         strokeLinecap="round"
       />
-      {/* Branch right at y≈590 */}
+
+      {/* Branch from crack A below joint, runs right */}
       <path
-        d="M845,590 C880,595 920,585 960,592 C1000,598 1040,588 1080,595"
+        d="M658,350 l10,3 l12,-1 l9,2 l11,-2 l10,4 l12,-1 l9,3
+           l11,-2 l10,3 l12,-1 l9,2 l11,-3 l10,4"
         stroke="rgba(0,240,255,0.11)"
         strokeWidth="0.8"
         strokeLinecap="round"
       />
-      {/* Short spur left at y≈170 */}
+
+      {/* Corner break — triangular spall at intersection */}
       <path
-        d="M842,170 C810,175 778,168 748,175 C720,180 695,172 670,178"
-        stroke="rgba(0,240,255,0.10)"
-        strokeWidth="0.8"
-        strokeLinecap="round"
+        d="M640,270 l-25,-18 l-3,2 l22,16 Z"
+        fill="rgba(0,240,255,0.06)"
       />
-
-      {/* Micro-crack cluster around y≈380 intersection */}
-      <path d="M815,365 C808,355 800,348 790,340" stroke="rgba(0,240,255,0.07)" strokeWidth="0.5" strokeLinecap="round" />
-      <path d="M830,390 C838,400 845,408 850,420" stroke="rgba(0,240,255,0.06)" strokeWidth="0.5" strokeLinecap="round" />
-      <path d="M810,375 C800,370 792,362 785,352" stroke="rgba(0,240,255,0.05)" strokeWidth="0.4" strokeLinecap="round" />
-
-      {/* Spall chips */}
-      <ellipse cx="840" cy="250" rx="4" ry="1.5" fill="rgba(0,240,255,0.07)" transform="rotate(-18,840,250)" />
-      <ellipse cx="830" cy="480" rx="3" ry="2" fill="rgba(0,240,255,0.06)" transform="rotate(10,830,480)" />
-      <ellipse cx="842" cy="700" rx="5" ry="1.5" fill="rgba(0,240,255,0.08)" transform="rotate(-5,842,700)" />
+      <path
+        d="M640,270 l20,22 l2,-3 l-18,-19 Z"
+        fill="rgba(0,240,255,0.05)"
+      />
 
 
       {/* ═══════════════════════════════════════════════
-          FRACTURE SYSTEM 3 — Right third of viewport
-          Shorter main crack with diagonal branching
+          MAIN CRACK B — originates from joint intersection
+          at (960, 540), runs roughly vertical with wander
           ═══════════════════════════════════════════════ */}
 
-      {/* Deep shadow */}
+      {/* Variable-width filled crack — up from intersection */}
       <path
-        d="M1480,-10 C1475,60 1488,130 1478,200 C1468,280 1485,350 1492,430
-           C1498,510 1475,580 1470,660 C1465,740 1482,810 1488,890
-           C1492,950 1478,1010 1475,1090"
-        stroke="rgba(0,240,255,0.05)"
-        strokeWidth="5"
-        strokeLinecap="round"
+        d="M958,538
+           l-2,-10 l3,-9 l-1,-11 l4,-8 l-2,-12 l3,-9 l-1,-10 l4,-11
+           l-2,-8 l3,-12 l-1,-9 l4,-10 l-2,-11 l3,-8 l-1,-12 l4,-9
+           l-2,-10 l3,-11 l-1,-8 l4,-12 l-2,-9
+           l3,0
+           l2,9 l-4,12 l1,8 l-3,11 l2,10 l-4,9 l1,12 l-3,8
+           l2,11 l-4,10 l1,9 l-3,12 l2,8 l-4,10 l1,11 l-3,9
+           l2,8 l-4,12 l1,10 l-3,9 l2,11 l-4,8
+           Z"
+        fill="rgba(0,240,255,0.20)"
+        filter="url(#crack-glow)"
       />
-      {/* Main fracture */}
+      {/* Shadow */}
       <path
-        d="M1480,-10 C1475,60 1488,130 1478,200 C1468,280 1485,350 1492,430
-           C1498,510 1475,580 1470,660 C1465,740 1482,810 1488,890
-           C1492,950 1478,1010 1475,1090"
-        stroke="rgba(0,240,255,0.20)"
-        strokeWidth="1.5"
-        strokeLinecap="round"
+        d="M958,538
+           l-2,-10 l3,-9 l-1,-11 l4,-8 l-2,-12 l3,-9 l-1,-10 l4,-11
+           l-2,-8 l3,-12 l-1,-9 l4,-10 l-2,-11 l3,-8 l-1,-12 l4,-9
+           l-2,-10 l3,-11 l-1,-8 l4,-12 l-2,-9
+           l5,1
+           l2,9 l-4,12 l1,8 l-3,11 l2,10 l-4,9 l1,12 l-3,8
+           l2,11 l-4,10 l1,9 l-3,12 l2,8 l-4,10 l1,11 l-3,9
+           l2,8 l-4,12 l1,10 l-3,9 l2,11 l-4,8
+           Z"
+        fill="rgba(0,240,255,0.04)"
+      />
+
+      {/* Continues down from intersection */}
+      <path
+        d="M962,542
+           l2,11 l-3,9 l1,10 l-4,12 l2,8 l-3,11 l1,9 l-4,10
+           l2,12 l-3,8 l1,11 l-4,9 l2,10 l-3,12 l1,8 l-4,11
+           l2,9 l-3,10 l1,12 l-4,8 l2,11 l-3,9 l1,10
+           l3,1
+           l-1,-10 l3,-9 l-2,-11 l4,-8 l-1,-12 l3,-10 l-2,-8 l4,-11
+           l-1,-9 l3,-12 l-2,-8 l4,-10 l-1,-11 l3,-9 l-2,-12 l4,-8
+           l-1,-10 l3,-11 l-2,-9 l4,-12 l-1,-8 l3,-11 l-2,-9
+           Z"
+        fill="rgba(0,240,255,0.17)"
         filter="url(#crack-glow)"
       />
 
-      {/* Diagonal branch — upper left */}
+      {/* Branch left from crack B at ~y=440 */}
       <path
-        d="M1478,200 C1440,220 1400,215 1360,235 C1320,255 1280,248 1245,265"
-        stroke="rgba(0,240,255,0.15)"
-        strokeWidth="1.2"
+        d="M955,440 l-10,-2 l-12,3 l-9,-1 l-11,4 l-10,-2 l-12,3
+           l-9,-1 l-11,3 l-10,-2 l-12,4 l-9,-1 l-11,3 l-10,-2"
+        stroke="rgba(0,240,255,0.13)"
+        strokeWidth="1.1"
         strokeLinecap="round"
       />
-      {/* Sub-branch from diagonal */}
+      {/* Hair-crack continuing from branch */}
       <path
-        d="M1360,235 C1355,260 1350,285 1345,310 C1342,330 1348,348 1345,370"
-        stroke="rgba(0,240,255,0.09)"
-        strokeWidth="0.7"
-        strokeLinecap="round"
-      />
-
-      {/* Branch right at y≈430 */}
-      <path
-        d="M1492,430 C1530,435 1570,425 1610,435 C1650,442 1690,432 1730,440
-           C1770,446 1810,438 1850,445 C1880,450 1900,442 1930,448"
-        stroke="rgba(0,240,255,0.14)"
-        strokeWidth="1"
+        d="M815,443 l-8,-4 l-10,-3 l-9,-5 l-8,-3 l-10,-4"
+        stroke="rgba(0,240,255,0.06)"
+        strokeWidth="0.5"
         strokeLinecap="round"
       />
 
-      {/* Short branch left at y≈660 */}
+      {/* Branch right from crack B at ~y=620 */}
       <path
-        d="M1470,660 C1430,665 1390,655 1350,665 C1320,672 1290,662 1260,670"
-        stroke="rgba(0,240,255,0.11)"
-        strokeWidth="0.8"
+        d="M965,620 l11,2 l9,-3 l12,1 l10,-2 l11,4 l9,-1 l12,3
+           l10,-2 l11,3 l9,-1 l12,2"
+        stroke="rgba(0,240,255,0.10)"
+        strokeWidth="0.9"
         strokeLinecap="round"
       />
 
-      {/* Micro-cracks */}
-      <path d="M1485,310 C1495,300 1505,295 1518,288" stroke="rgba(0,240,255,0.07)" strokeWidth="0.5" strokeLinecap="round" />
-      <path d="M1472,540 C1460,535 1450,528 1438,520" stroke="rgba(0,240,255,0.06)" strokeWidth="0.5" strokeLinecap="round" />
-      <path d="M1488,810 C1500,818 1512,822 1525,828" stroke="rgba(0,240,255,0.06)" strokeWidth="0.4" strokeLinecap="round" />
-
-      {/* Spall chips */}
-      <ellipse cx="1482" cy="140" rx="3" ry="1.5" fill="rgba(0,240,255,0.06)" transform="rotate(22,1482,140)" />
-      <ellipse cx="1470" cy="520" rx="4" ry="2" fill="rgba(0,240,255,0.07)" transform="rotate(-8,1470,520)" />
+      {/* Corner spall at intersection */}
+      <path d="M960,540 l-30,-15 l-2,4 l28,11 Z" fill="rgba(0,240,255,0.05)" />
+      <path d="M960,540 l18,28 l3,-2 l-17,-26 Z" fill="rgba(0,240,255,0.04)" />
 
 
       {/* ═══════════════════════════════════════════════
-          ISOLATED MICRO-CRACK CLUSTERS
-          Small cracks not connected to main systems
+          MAIN CRACK C — originates near joint at
+          (1280, 810), runs up-left diagonally
           ═══════════════════════════════════════════════ */}
 
-      {/* Cluster A — lower left */}
+      {/* Filled crack — diagonal up-left */}
       <path
-        d="M350,750 C358,780 352,810 360,845 C365,870 358,895 362,920"
-        stroke="rgba(0,240,255,0.10)"
-        strokeWidth="0.8"
+        d="M1278,808
+           l-5,-9 l-4,-10 l-6,-8 l-3,-11 l-5,-9 l-4,-10 l-6,-12
+           l-3,-8 l-5,-11 l-4,-9 l-6,-10 l-3,-12 l-5,-8 l-4,-11
+           l-6,-9 l-3,-10 l-5,-12 l-4,-8 l-6,-11 l-3,-9
+           l3,-1
+           l3,9 l6,11 l4,8 l5,12 l3,10 l6,9 l4,11 l5,8
+           l3,12 l6,10 l4,9 l5,11 l3,8 l6,12 l4,10 l5,9
+           l3,8 l6,11 l4,12 l5,8 l3,10
+           Z"
+        fill="rgba(0,240,255,0.16)"
+        filter="url(#crack-glow)"
+      />
+
+      {/* Continues down-right from intersection */}
+      <path
+        d="M1282,812
+           l6,10 l3,9 l5,11 l4,8 l6,12 l3,9 l5,10 l4,11
+           l6,8 l3,12 l5,9 l4,10 l6,11 l3,8
+           l3,-1
+           l-3,-8 l-6,-11 l-4,-10 l-5,-9 l-3,-12 l-6,-8
+           l-4,-11 l-5,-10 l-3,-9 l-6,-12 l-4,-8 l-5,-11
+           l-3,-9 l-6,-10
+           Z"
+        fill="rgba(0,240,255,0.14)"
+        filter="url(#crack-glow)"
+      />
+
+      {/* Branch runs along joint line to the right */}
+      <path
+        d="M1282,812 l12,1 l10,-2 l11,3 l9,-1 l12,2 l10,-2 l11,3
+           l9,-1 l12,2 l10,-3 l11,4 l9,-1 l12,2 l10,-2 l11,3
+           l9,-1 l12,2 l10,-3"
+        stroke="rgba(0,240,255,0.11)"
+        strokeWidth="0.9"
         strokeLinecap="round"
       />
-      <path d="M355,810 C375,815 395,808 415,815" stroke="rgba(0,240,255,0.07)" strokeWidth="0.5" strokeLinecap="round" />
-      <path d="M358,845 C340,850 322,842 305,850" stroke="rgba(0,240,255,0.06)" strokeWidth="0.5" strokeLinecap="round" />
 
-      {/* Cluster B — upper center-right */}
+      {/* Short downward spur */}
       <path
-        d="M1150,80 C1155,110 1148,140 1155,172 C1160,200 1152,225 1158,255"
-        stroke="rgba(0,240,255,0.09)"
-        strokeWidth="0.7"
-        strokeLinecap="round"
-      />
-      <path d="M1152,140 C1170,145 1190,138 1210,145" stroke="rgba(0,240,255,0.06)" strokeWidth="0.5" strokeLinecap="round" />
-
-      {/* Cluster C — bottom center */}
-      <path
-        d="M920,920 C928,945 922,968 930,995 C935,1015 928,1035 932,1060"
+        d="M1270,812 l-2,10 l3,9 l-1,11 l4,8 l-2,12 l3,9"
         stroke="rgba(0,240,255,0.08)"
         strokeWidth="0.7"
         strokeLinecap="round"
       />
-      <path d="M925,968 C945,972 965,965 985,972" stroke="rgba(0,240,255,0.06)" strokeWidth="0.5" strokeLinecap="round" />
-      <path d="M928,995 C908,1000 888,992 870,1000" stroke="rgba(0,240,255,0.05)" strokeWidth="0.4" strokeLinecap="round" />
+
+      {/* Corner spall */}
+      <path d="M1280,810 l22,-20 l-3,-2 l-19,18 Z" fill="rgba(0,240,255,0.05)" />
+
+
+      {/* ═══════════════════════════════════════════════
+          SECONDARY CRACKS — within individual slabs
+          Not connected to main fracture systems
+          ═══════════════════════════════════════════════ */}
+
+      {/* Slab [0,0] — small corner crack from top-left area */}
+      <path
+        d="M12,15 l8,7 l9,8 l7,9 l8,7 l9,8 l7,10 l8,7"
+        stroke="rgba(0,240,255,0.08)"
+        strokeWidth="0.7"
+        strokeLinecap="round"
+      />
+      <path
+        d="M12,15 l7,8 l8,9 l6,7 l8,8"
+        stroke="rgba(0,240,255,0.04)"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+
+      {/* Slab [3,1] — settlement crack, short diagonal */}
+      <path
+        d="M1010,320 l4,9 l-2,11 l3,8 l-1,12 l4,9 l-2,10 l3,11
+           l-1,8 l4,12 l-2,9 l3,10"
+        stroke="rgba(0,240,255,0.09)"
+        strokeWidth="0.8"
+        strokeLinecap="round"
+      />
+      <path
+        d="M1010,320 l4,9 l-2,11 l3,8 l-1,12 l4,9 l-2,10 l3,11
+           l-1,8 l4,12 l-2,9 l3,10"
+        stroke="rgba(0,240,255,0.03)"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+
+      {/* Slab [5,0] — hairline Y-crack near slab center */}
+      <path
+        d="M1700,120 l-3,8 l2,9 l-1,10 l3,8 l-2,9"
+        stroke="rgba(0,240,255,0.07)"
+        strokeWidth="0.6"
+        strokeLinecap="round"
+      />
+      <path d="M1699,155 l-8,4 l-9,3 l-8,5" stroke="rgba(0,240,255,0.05)" strokeWidth="0.5" strokeLinecap="round" />
+      <path d="M1699,155 l7,5 l8,4 l9,3" stroke="rgba(0,240,255,0.05)" strokeWidth="0.5" strokeLinecap="round" />
+
+      {/* Slab [1,2] — long weathering crack */}
+      <path
+        d="M380,580 l3,9 l-2,10 l4,8 l-1,11 l3,9 l-2,10 l4,12
+           l-1,8 l3,11 l-2,9 l4,10 l-1,12 l3,8 l-2,11 l4,9"
+        stroke="rgba(0,240,255,0.08)"
+        strokeWidth="0.7"
+        strokeLinecap="round"
+      />
+
+      {/* Slab [4,3] — map-cracking pattern (alligator cracks) */}
+      <path d="M1320,860 l15,10 l12,8 l14,12" stroke="rgba(0,240,255,0.07)" strokeWidth="0.6" strokeLinecap="round" />
+      <path d="M1320,860 l8,15 l6,12 l10,14" stroke="rgba(0,240,255,0.06)" strokeWidth="0.5" strokeLinecap="round" />
+      <path d="M1340,878 l12,-5 l10,-8 l14,-4" stroke="rgba(0,240,255,0.05)" strokeWidth="0.5" strokeLinecap="round" />
+      <path d="M1340,878 l-4,12 l-6,10 l-3,14" stroke="rgba(0,240,255,0.06)" strokeWidth="0.5" strokeLinecap="round" />
+      <path d="M1350,890 l10,8 l8,10" stroke="rgba(0,240,255,0.05)" strokeWidth="0.4" strokeLinecap="round" />
+      <path d="M1335,875 l-10,3 l-12,6" stroke="rgba(0,240,255,0.04)" strokeWidth="0.4" strokeLinecap="round" />
+
+
+      {/* ═══════════════════════════════════════════════
+          SURFACE DETAIL — chips, pitting, wear marks
+          ═══════════════════════════════════════════════ */}
+
+      {/* Spall chips at crack intersections */}
+      <ellipse cx="640" cy="268" rx="6" ry="3" fill="rgba(0,240,255,0.06)" transform="rotate(-15,640,268)" />
+      <ellipse cx="962" cy="540" rx="5" ry="3" fill="rgba(0,240,255,0.05)" transform="rotate(8,962,540)" />
+      <ellipse cx="1280" cy="810" rx="7" ry="3" fill="rgba(0,240,255,0.06)" transform="rotate(-22,1280,810)" />
+
+      {/* Pitting marks — tiny dots scattered on slab surfaces */}
+      <circle cx="200" cy="150" r="1.5" fill="rgba(0,240,255,0.04)" />
+      <circle cx="450" cy="400" r="1" fill="rgba(0,240,255,0.03)" />
+      <circle cx="780" cy="680" r="1.5" fill="rgba(0,240,255,0.04)" />
+      <circle cx="1100" cy="180" r="1" fill="rgba(0,240,255,0.03)" />
+      <circle cx="1400" cy="480" r="1.5" fill="rgba(0,240,255,0.04)" />
+      <circle cx="1750" cy="350" r="1" fill="rgba(0,240,255,0.03)" />
+      <circle cx="520" cy="900" r="1.5" fill="rgba(0,240,255,0.04)" />
+      <circle cx="1650" cy="750" r="1" fill="rgba(0,240,255,0.03)" />
+      <circle cx="300" cy="650" r="1.5" fill="rgba(0,240,255,0.04)" />
+      <circle cx="1500" cy="950" r="1" fill="rgba(0,240,255,0.03)" />
+      <circle cx="850" cy="100" r="1" fill="rgba(0,240,255,0.03)" />
+      <circle cx="1050" cy="780" r="1.5" fill="rgba(0,240,255,0.04)" />
+
+      {/* Wear grooves — very faint, along foot traffic paths */}
+      <path
+        d="M0,500 l60,0 l55,-1 l50,1 l60,0 l55,-1 l50,1 l60,0
+           l55,-1 l50,1 l60,0 l55,-1 l50,1 l60,0 l55,-1 l50,1
+           l60,0 l55,-1 l50,1 l60,0 l55,-1 l50,1 l60,0 l55,-1
+           l50,1 l60,0"
+        stroke="rgba(0,240,255,0.02)"
+        strokeWidth="8"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
