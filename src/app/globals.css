@@ -154,34 +154,42 @@
   animation: portal-flicker 3s ease-in-out infinite;
 }
 
-/* Fast entrance flicker — plays once, ends fully visible */
+/* Accelerating entrance flicker — one slow flash, builds speed, bright flash */
 @keyframes portal-entrance {
   0%   { opacity: 0; }
-  /* Flash 1 */
-  10%  { opacity: 0; }
-  12%  { opacity: 0.85; }
-  15%  { opacity: 0; }
+  /* Flash 1 — isolated, slow */
+  12%  { opacity: 0; }
+  14%  { opacity: 0.7; }
+  17%  { opacity: 0; }
+  /* Longer gap builds anticipation */
   /* Flash 2 */
-  28%  { opacity: 0; }
-  30%  { opacity: 1; }
-  33%  { opacity: 0; }
-  /* Flash 3 — quick double-tap */
+  34%  { opacity: 0; }
+  36%  { opacity: 0.85; }
+  39%  { opacity: 0; }
+  /* Shorter gap — acceleration begins */
+  /* Flash 3 */
   50%  { opacity: 0; }
   52%  { opacity: 0.6; }
   54%  { opacity: 0; }
-  55%  { opacity: 0.95; }
-  58%  { opacity: 0; }
-  /* Flash 4 */
-  75%  { opacity: 0; }
-  78%  { opacity: 0.8; }
-  81%  { opacity: 0; }
-  /* Final solidify */
-  92%  { opacity: 0; }
-  95%  { opacity: 1; }
+  /* Flash 4 — gap shrinks */
+  61%  { opacity: 0; }
+  63%  { opacity: 0.9; }
+  65%  { opacity: 0; }
+  /* Rapid cluster */
+  69%  { opacity: 0; }
+  71%  { opacity: 0.5; }
+  72%  { opacity: 0; }
+  75%  { opacity: 0.75; }
+  76%  { opacity: 0; }
+  79%  { opacity: 0.65; }
+  80%  { opacity: 0; }
+  /* Bright flash — crescendo */
+  84%  { opacity: 0; }
+  87%  { opacity: 1; }
   100% { opacity: 1; }
 }
 .portal-entrance {
-  animation: portal-entrance 0.8s linear forwards;
+  animation: portal-entrance 1.2s linear forwards;
 }
 
 /* Radial gradient utility */
