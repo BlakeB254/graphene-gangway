@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { UrbanTextures } from "@/components/backgrounds/UrbanTextures";
 
 export default function MainLayout({
   children,
@@ -8,6 +9,7 @@ export default function MainLayout({
 }) {
   return (
     <>
+      <UrbanTextures />
       <Navbar />
       <main>{children}</main>
       <Footer />
