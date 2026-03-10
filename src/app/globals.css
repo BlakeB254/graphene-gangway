@@ -154,31 +154,34 @@
   animation: portal-flicker 3s ease-in-out infinite;
 }
 
-/* Subliminal flashes — mostly OFF, single-frame pops every ~0.8s */
+/* Fast entrance flicker — plays once, ends fully visible */
 @keyframes portal-entrance {
   0%   { opacity: 0; }
   /* Flash 1 */
-  29%  { opacity: 0; }
-  30%  { opacity: 0.85; }
-  31%  { opacity: 0; }
+  10%  { opacity: 0; }
+  12%  { opacity: 0.85; }
+  15%  { opacity: 0; }
   /* Flash 2 */
-  52%  { opacity: 0; }
-  53%  { opacity: 1; }
-  54%  { opacity: 0; }
+  28%  { opacity: 0; }
+  30%  { opacity: 1; }
+  33%  { opacity: 0; }
   /* Flash 3 — quick double-tap */
-  74%  { opacity: 0; }
-  75%  { opacity: 0.6; }
-  76%  { opacity: 0; }
-  77%  { opacity: 0.95; }
-  78%  { opacity: 0; }
+  50%  { opacity: 0; }
+  52%  { opacity: 0.6; }
+  54%  { opacity: 0; }
+  55%  { opacity: 0.95; }
+  58%  { opacity: 0; }
   /* Flash 4 */
-  93%  { opacity: 0; }
-  94%  { opacity: 0.75; }
-  95%  { opacity: 0; }
-  100% { opacity: 0; }
+  75%  { opacity: 0; }
+  78%  { opacity: 0.8; }
+  81%  { opacity: 0; }
+  /* Final solidify */
+  92%  { opacity: 0; }
+  95%  { opacity: 1; }
+  100% { opacity: 1; }
 }
 .portal-entrance {
-  animation: portal-entrance 3s linear infinite;
+  animation: portal-entrance 0.8s linear forwards;
 }
 
 /* Radial gradient utility */

@@ -1,9 +1,15 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  animate,
+} from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
 
@@ -14,11 +20,21 @@ export function HeroPortal() {
     offset: ["start start", "end end"],
   });
 
-  // ── Flicker only at the very top (scroll = 0) ──
-  const [isFlickering, setIsFlickering] = useState(true);
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    setIsFlickering(v < 0.005);
-  });
+  // ── Dual-trigger: auto-play timer + scroll (whichever is further) ──
+  const timerProgress = useMotionValue(0);
+
+  useEffect(() => {
+    const controls = animate(timerProgress, 0.55, {
+      duration: 2,
+      ease: "easeOut",
+    });
+    return () => controls.stop();
+  }, [timerProgress]);
+
+  const progress = useTransform(
+    [scrollYProgress, timerProgress],
+    ([scroll, timer]: number[]) => Math.max(scroll, timer)
+  );
 
   // ═══════════════════════════════════════════════════
   // Phase 1 (0-6%):   Mini zoom — image scales up
@@ -29,71 +45,71 @@ export function HeroPortal() {
 
   // ── Portal scale: mini zoom → hold → shrink for layout ──
   const portalScale = useTransform(
-    scrollYProgress,
+    progress,
     [0, 0.06, 0.16, 0.55],
     [0.92, 1.0, 1.0, 0.8]
   );
 
   // ── Portal position: centered → shift left ──
   const portalX = useTransform(
-    scrollYProgress,
+    progress,
     [0, 0.16, 0.55],
     ["0%", "0%", "-25%"]
   );
 
   // ── Image: visible during zoom, fades during swap ──
   const imageOpacity = useTransform(
-    scrollYProgress,
+    progress,
     [0.06, 0.16],
     [1, 0]
   );
 
   // ── Video: invisible, fades in during swap ──
   const videoOpacity = useTransform(
-    scrollYProgress,
+    progress,
     [0.06, 0.16],
     [0, 1]
   );
 
   // ── Ambient glow (follows portal, CSS flicker) ──
   const glowX = useTransform(
-    scrollYProgress,
+    progress,
     [0, 0.16, 0.55],
     ["0%", "0%", "-25%"]
   );
   const glowOpacity = useTransform(
-    scrollYProgress,
+    progress,
     [0, 0.04, 0.55],
     [0.15, 0.5, 0.2]
   );
   const glowScale = useTransform(
-    scrollYProgress,
+    progress,
     [0, 0.06, 0.55],
     [0.6, 1, 0.7]
   );
 
   // ── Text slides in from right ──
   const textX = useTransform(
-    scrollYProgress,
+    progress,
     [0.2, 0.55],
     ["100%", "0%"]
   );
   const textOpacity = useTransform(
-    scrollYProgress,
+    progress,
     [0.2, 0.5],
     [0, 1]
   );
 
   // ── Text backdrop (darkens right side for readability) ──
   const backdropOpacity = useTransform(
-    scrollYProgress,
+    progress,
     [0.16, 0.4],
     [0, 1]
   );
 
   // ── Scroll hint ──
   const scrollHintOpacity = useTransform(
-    scrollYProgress,
+    progress,
     [0, 0.06],
     [1, 0]
   );
@@ -129,7 +145,7 @@ export function HeroPortal() {
             style={{ opacity: imageOpacity }}
             className="absolute inset-0 z-[1] flex items-center justify-center"
           >
-            <div className={isFlickering ? "portal-entrance" : ""}>
+            <div className="portal-entrance">
               <Image
                 src="/logos/portal-frame.png"
                 alt="Graphene Gangway Portal"

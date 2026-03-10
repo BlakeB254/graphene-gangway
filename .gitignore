@@ -42,3 +42,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Environment files (added by CDX credential leak prevention)
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
