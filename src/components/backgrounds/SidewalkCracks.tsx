@@ -6,231 +6,346 @@ export function SidewalkCracks() {
       preserveAspectRatio="xMidYMid slice"
       fill="none"
     >
-      {/* ── SLAB GRID ──
-          Clean rectangular panels, top-down view.
-          Slightly offset widths so it's not a perfect grid.
-          Heavier weight = expansion joints, lighter = scored lines */}
+      <defs>
+        {/* Broom-finish texture pattern (horizontal drag lines in concrete) */}
+        <pattern id="broom" width="1920" height="5" patternUnits="userSpaceOnUse">
+          <line x1="0" y1="2.5" x2="1920" y2="2.5" stroke="rgba(0,240,255,1)" strokeWidth="0.3" />
+        </pattern>
 
-      {/* Expansion joints — horizontal */}
-      <line x1="0" y1="340" x2="1920" y2="340" stroke="rgba(0,240,255,0.14)" strokeWidth="1.2" />
-      <line x1="0" y1="700" x2="1920" y2="700" stroke="rgba(0,240,255,0.14)" strokeWidth="1.2" />
+        {/* Taper masks — gradient along crack path for variable width effect.
+            Each mask is aligned to the bounding box of its crack. */}
+        <linearGradient id="taper-up" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stopColor="white" stopOpacity="1" />
+          <stop offset="70%" stopColor="white" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="white" stopOpacity="0" />
+        </linearGradient>
+        <linearGradient id="taper-down" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="white" stopOpacity="1" />
+          <stop offset="70%" stopColor="white" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="white" stopOpacity="0" />
+        </linearGradient>
+        <linearGradient id="taper-diag" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0%" stopColor="white" stopOpacity="1" />
+          <stop offset="65%" stopColor="white" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="white" stopOpacity="0" />
+        </linearGradient>
 
-      {/* Expansion joints — vertical */}
-      <line x1="420" y1="0" x2="420" y2="1080" stroke="rgba(0,240,255,0.12)" strokeWidth="1.2" />
-      <line x1="880" y1="0" x2="880" y2="1080" stroke="rgba(0,240,255,0.14)" strokeWidth="1.2" />
-      <line x1="1320" y1="0" x2="1320" y2="1080" stroke="rgba(0,240,255,0.12)" strokeWidth="1.2" />
-      <line x1="1720" y1="0" x2="1720" y2="1080" stroke="rgba(0,240,255,0.13)" strokeWidth="1.2" />
+        <mask id="mask-up">
+          <rect x="0" y="0" width="1920" height="1080" fill="url(#taper-up)" />
+        </mask>
+        <mask id="mask-down">
+          <rect x="0" y="0" width="1920" height="1080" fill="url(#taper-down)" />
+        </mask>
+        <mask id="mask-diag">
+          <rect x="0" y="0" width="1920" height="1080" fill="url(#taper-diag)" />
+        </mask>
+      </defs>
 
-      {/* Scored mid-slab lines (lighter weight, dashed) */}
+
+      {/* ═══════════════════════════════════════════════
+          CURB EDGE — left side, gives perspective
+          and anchors the composition
+          ═══════════════════════════════════════════════ */}
+
+      {/* Curb face (thick, confident stroke) */}
       <line
-        x1="0" y1="170" x2="420" y2="170"
-        stroke="rgba(0,240,255,0.05)" strokeWidth="0.6"
-        strokeDasharray="8 12"
+        x1="85" y1="0" x2="85" y2="1080"
+        stroke="rgba(0,240,255,0.18)"
+        strokeWidth="2"
       />
+      {/* Curb lip — inner edge showing thickness */}
       <line
-        x1="880" y1="520" x2="1320" y2="520"
-        stroke="rgba(0,240,255,0.05)" strokeWidth="0.6"
-        strokeDasharray="8 12"
+        x1="92" y1="0" x2="92" y2="1080"
+        stroke="rgba(0,240,255,0.07)"
+        strokeWidth="0.6"
       />
+      {/* Gutter line */}
       <line
-        x1="650" y1="340" x2="650" y2="700"
-        stroke="rgba(0,240,255,0.04)" strokeWidth="0.5"
-        strokeDasharray="6 14"
-      />
-      <line
-        x1="1100" y1="0" x2="1100" y2="340"
-        stroke="rgba(0,240,255,0.04)" strokeWidth="0.5"
-        strokeDasharray="6 14"
-      />
-
-      {/* Lifted slab edge — one panel slightly raised,
-          showing a 3D lip as a double line */}
-      <line x1="880" y1="700" x2="1320" y2="700" stroke="rgba(0,240,255,0.20)" strokeWidth="1.5" />
-      <line x1="880" y1="703" x2="1320" y2="703" stroke="rgba(0,240,255,0.06)" strokeWidth="0.5" />
-
-
-      {/* ── CRACK SYSTEM 1 ──
-          Originates from intersection (880, 340).
-          Clean line art strokes — intentional, graphic.
-          Two weights: main crack + shadow line */}
-
-      {/* Main crack — runs up-left from joint */}
-      <path
-        d="M880,340 L870,310 L862,275 L855,240 L848,200
-           L842,165 L838,130 L830,90 L825,55 L818,15"
-        stroke="rgba(0,240,255,0.22)"
-        strokeWidth="1.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      {/* Shadow offset */}
-      <path
-        d="M882,340 L872,310 L864,275 L857,240 L850,200
-           L844,165 L840,130 L832,90 L827,55 L820,15"
+        x1="78" y1="0" x2="78" y2="1080"
         stroke="rgba(0,240,255,0.05)"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        strokeWidth="0.5"
       />
 
-      {/* Continues down-right from joint */}
-      <path
-        d="M880,340 L892,378 L900,415 L910,455
-           L918,495 L928,540 L935,580 L945,625 L952,665"
-        stroke="rgba(0,240,255,0.20)"
-        strokeWidth="1.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+
+      {/* ═══════════════════════════════════════════════
+          SLAB GRID — slightly irregular panel sizes
+          Not a perfect grid. Some joints heavier (newer pour),
+          some lighter (worn). Panels get slightly wider
+          toward the right (perspective hint).
+          ═══════════════════════════════════════════════ */}
+
+      {/* Horizontal joints */}
+      <line x1="92" y1="285" x2="1920" y2="285" stroke="rgba(0,240,255,0.11)" strokeWidth="1" />
+      <line x1="92" y1="580" x2="1920" y2="580" stroke="rgba(0,240,255,0.13)" strokeWidth="1.2" />
+      <line x1="92" y1="855" x2="1920" y2="855" stroke="rgba(0,240,255,0.10)" strokeWidth="0.9" />
+
+      {/* Vertical joints — uneven spacing */}
+      <line x1="460" y1="0" x2="460" y2="1080" stroke="rgba(0,240,255,0.12)" strokeWidth="1" />
+      <line x1="850" y1="0" x2="850" y2="1080" stroke="rgba(0,240,255,0.11)" strokeWidth="1" />
+      <line x1="1260" y1="0" x2="1260" y2="1080" stroke="rgba(0,240,255,0.13)" strokeWidth="1.1" />
+      <line x1="1640" y1="0" x2="1640" y2="1080" stroke="rgba(0,240,255,0.10)" strokeWidth="0.9" />
+
+      {/* Scored center line — only in some slabs (dashed, very fine) */}
+      <line
+        x1="92" y1="432" x2="460" y2="432"
+        stroke="rgba(0,240,255,0.04)" strokeWidth="0.5"
+        strokeDasharray="4 8"
       />
+      <line
+        x1="850" y1="718" x2="1260" y2="718"
+        stroke="rgba(0,240,255,0.035)" strokeWidth="0.4"
+        strokeDasharray="4 8"
+      />
+
+      {/* Broom-finish texture — fine horizontal drag lines
+          Only applied to a couple of slabs so it doesn't overwhelm */}
+      <rect
+        x="460" y="580" width="390" height="275"
+        fill="url(#broom)" opacity="0.04"
+      />
+      <rect
+        x="1260" y="285" width="380" height="295"
+        fill="url(#broom)" opacity="0.03"
+      />
+
+
+      {/* ═══════════════════════════════════════════════
+          CRACK 1 — PRIMARY
+          Originates at joint intersection (850, 580).
+          Runs upward and downward. Variable width via
+          layered strokes with taper masks.
+          ═══════════════════════════════════════════════ */}
+
+      {/* ── Upper arm (runs up from intersection) ── */}
+
+      {/* Wide glow layer — tapers out toward tip */}
       <path
-        d="M882,340 L894,378 L902,415 L912,455
-           L920,495 L930,540 L937,580 L947,625 L954,665"
+        d="M850,580
+           C842,540 830,495 824,450
+           C818,405 808,355 800,310
+           C792,265 785,215 778,170
+           C772,130 768,85 762,40
+           C758,15 755,0 752,-10"
         stroke="rgba(0,240,255,0.04)"
+        strokeWidth="8"
+        strokeLinecap="round"
+        mask="url(#mask-up)"
+      />
+      {/* Medium body layer */}
+      <path
+        d="M850,580
+           C842,540 830,495 824,450
+           C818,405 808,355 800,310
+           C792,265 785,215 778,170
+           C772,130 768,85 762,40
+           C758,15 755,0 752,-10"
+        stroke="rgba(0,240,255,0.10)"
         strokeWidth="2.5"
         strokeLinecap="round"
-        strokeLinejoin="round"
+        mask="url(#mask-up)"
       />
-
-      {/* Branch — runs left along joint line */}
+      {/* Sharp edge — full length, thin, bright */}
       <path
-        d="M880,340 L840,338 L795,342 L750,336
-           L700,340 L655,335 L605,342 L560,336"
-        stroke="rgba(0,240,255,0.12)"
+        d="M850,580
+           C842,540 830,495 824,450
+           C818,405 808,355 800,310
+           C792,265 785,215 778,170
+           C772,130 768,85 762,40
+           C758,15 755,0 752,-10"
+        stroke="rgba(0,240,255,0.22)"
         strokeWidth="0.7"
         strokeLinecap="round"
-        strokeLinejoin="round"
       />
 
-      {/* Branch — short spur down-left from midpoint */}
+      {/* ── Lower arm (runs down-right from intersection) ── */}
       <path
-        d="M910,455 L888,462 L865,470 L842,478 L820,488"
-        stroke="rgba(0,240,255,0.10)"
-        strokeWidth="0.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-
-      {/* Taper lines — thin marks at crack tips */}
-      <path
-        d="M818,15 L815,0"
-        stroke="rgba(0,240,255,0.08)"
-        strokeWidth="0.3"
-        strokeLinecap="round"
-      />
-      <path
-        d="M952,665 L955,680 L958,695"
-        stroke="rgba(0,240,255,0.08)"
-        strokeWidth="0.3"
-        strokeLinecap="round"
-      />
-
-      {/* Cross-hatch marks at stress point (intersection) */}
-      <line x1="872" y1="332" x2="876" y2="328" stroke="rgba(0,240,255,0.08)" strokeWidth="0.4" />
-      <line x1="875" y1="335" x2="879" y2="331" stroke="rgba(0,240,255,0.08)" strokeWidth="0.4" />
-      <line x1="878" y1="338" x2="882" y2="334" stroke="rgba(0,240,255,0.08)" strokeWidth="0.4" />
-      <line x1="881" y1="341" x2="885" y2="337" stroke="rgba(0,240,255,0.08)" strokeWidth="0.4" />
-      <line x1="884" y1="344" x2="888" y2="340" stroke="rgba(0,240,255,0.08)" strokeWidth="0.4" />
-
-
-      {/* ── CRACK SYSTEM 2 ──
-          Originates from intersection (1320, 700).
-          Runs diagonally up-right and straight down. */}
-
-      {/* Main crack — diagonal up-right */}
-      <path
-        d="M1320,700 L1340,665 L1358,628 L1375,592
-           L1395,555 L1412,518 L1430,480 L1448,445 L1465,408"
-        stroke="rgba(0,240,255,0.20)"
-        strokeWidth="1.1"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M1322,700 L1342,665 L1360,628 L1377,592
-           L1397,555 L1414,518 L1432,480 L1450,445 L1467,408"
+        d="M850,580
+           C858,625 868,670 876,720
+           C884,768 892,818 900,865
+           C908,910 918,960 925,1010
+           C930,1045 935,1070 938,1090"
         stroke="rgba(0,240,255,0.04)"
-        strokeWidth="2.5"
+        strokeWidth="7"
         strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-
-      {/* Continues down from joint */}
-      <path
-        d="M1320,700 L1315,738 L1310,778 L1305,818
-           L1300,860 L1295,905 L1290,950 L1285,1000 L1282,1050"
-        stroke="rgba(0,240,255,0.18)"
-        strokeWidth="1"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        mask="url(#mask-down)"
       />
       <path
-        d="M1322,700 L1317,738 L1312,778 L1307,818
-           L1302,860 L1297,905 L1292,950 L1287,1000 L1284,1050"
-        stroke="rgba(0,240,255,0.04)"
+        d="M850,580
+           C858,625 868,670 876,720
+           C884,768 892,818 900,865
+           C908,910 918,960 925,1010
+           C930,1045 935,1070 938,1090"
+        stroke="rgba(0,240,255,0.09)"
         strokeWidth="2"
         strokeLinecap="round"
-        strokeLinejoin="round"
+        mask="url(#mask-down)"
+      />
+      <path
+        d="M850,580
+           C858,625 868,670 876,720
+           C884,768 892,818 900,865
+           C908,910 918,960 925,1010
+           C930,1045 935,1070 938,1090"
+        stroke="rgba(0,240,255,0.20)"
+        strokeWidth="0.7"
+        strokeLinecap="round"
       />
 
-      {/* Branch — horizontal right from ~y=555 */}
+      {/* ── Branches from Crack 1 ── */}
+
+      {/* Branch left — from upper arm at ~y=310 */}
       <path
-        d="M1395,555 L1430,558 L1468,552 L1505,558
-           L1540,552 L1580,558 L1615,552"
-        stroke="rgba(0,240,255,0.10)"
+        d="M800,310
+           C760,315 720,308 680,315
+           C640,320 600,312 565,318"
+        stroke="rgba(0,240,255,0.12)"
         strokeWidth="0.6"
         strokeLinecap="round"
-        strokeLinejoin="round"
+      />
+      {/* Sub-branch thinning off */}
+      <path
+        d="M680,315 C675,345 668,375 662,405"
+        stroke="rgba(0,240,255,0.06)"
+        strokeWidth="0.4"
+        strokeLinecap="round"
       />
 
-      {/* Branch — short left from lower section */}
+      {/* Branch right — from lower arm at ~y=720 */}
       <path
-        d="M1305,818 L1275,825 L1245,820 L1215,828 L1188,822"
-        stroke="rgba(0,240,255,0.09)"
+        d="M876,720
+           C920,724 965,716 1010,722
+           C1055,728 1095,718 1140,725
+           C1175,730 1210,722 1240,728"
+        stroke="rgba(0,240,255,0.10)"
         strokeWidth="0.5"
         strokeLinecap="round"
-        strokeLinejoin="round"
       />
 
-      {/* Cross-hatch at intersection */}
-      <line x1="1312" y1="694" x2="1316" y2="690" stroke="rgba(0,240,255,0.07)" strokeWidth="0.4" />
-      <line x1="1315" y1="697" x2="1319" y2="693" stroke="rgba(0,240,255,0.07)" strokeWidth="0.4" />
-      <line x1="1318" y1="700" x2="1322" y2="696" stroke="rgba(0,240,255,0.07)" strokeWidth="0.4" />
-      <line x1="1321" y1="703" x2="1325" y2="699" stroke="rgba(0,240,255,0.07)" strokeWidth="0.4" />
-
-
-      {/* ── ISOLATED HAIRLINES ──
-          Small cracks within individual slabs,
-          not connected to main systems */}
-
-      {/* Slab top-left — short diagonal */}
+      {/* Micro-spur at ~y=450 */}
       <path
-        d="M120,85 L135,115 L148,150 L160,188"
+        d="M824,450 C810,455 795,460 782,468"
+        stroke="rgba(0,240,255,0.06)"
+        strokeWidth="0.3"
+        strokeLinecap="round"
+      />
+
+
+      {/* ═══════════════════════════════════════════════
+          CRACK 2 — SECONDARY
+          Originates from intersection (1260, 285).
+          Runs diagonal down-right. Thinner overall.
+          ═══════════════════════════════════════════════ */}
+
+      {/* Glow */}
+      <path
+        d="M1260,285
+           C1278,335 1298,388 1315,440
+           C1332,492 1350,545 1368,600
+           C1385,652 1402,708 1420,760
+           C1435,808 1450,860 1465,910"
+        stroke="rgba(0,240,255,0.035)"
+        strokeWidth="6"
+        strokeLinecap="round"
+        mask="url(#mask-diag)"
+      />
+      {/* Body */}
+      <path
+        d="M1260,285
+           C1278,335 1298,388 1315,440
+           C1332,492 1350,545 1368,600
+           C1385,652 1402,708 1420,760
+           C1435,808 1450,860 1465,910"
         stroke="rgba(0,240,255,0.08)"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        mask="url(#mask-diag)"
+      />
+      {/* Edge */}
+      <path
+        d="M1260,285
+           C1278,335 1298,388 1315,440
+           C1332,492 1350,545 1368,600
+           C1385,652 1402,708 1420,760
+           C1435,808 1450,860 1465,910"
+        stroke="rgba(0,240,255,0.18)"
+        strokeWidth="0.6"
+        strokeLinecap="round"
+      />
+
+      {/* Short upward arm from same intersection */}
+      <path
+        d="M1260,285
+           C1255,248 1248,210 1242,175
+           C1238,145 1232,110 1228,80"
+        stroke="rgba(0,240,255,0.14)"
         strokeWidth="0.5"
         strokeLinecap="round"
       />
 
-      {/* Slab bottom-center — gentle curve */}
+      {/* Branch left — from ~y=600 */}
       <path
-        d="M580,780 L595,815 L605,855 L612,895"
+        d="M1368,600
+           C1330,605 1290,598 1250,605
+           C1215,610 1180,602 1145,608"
+        stroke="rgba(0,240,255,0.08)"
+        strokeWidth="0.4"
+        strokeLinecap="round"
+      />
+
+      {/* Branch right — from ~y=440 */}
+      <path
+        d="M1315,440
+           C1350,445 1388,438 1425,445
+           C1458,450 1495,442 1530,448"
         stroke="rgba(0,240,255,0.07)"
         strokeWidth="0.4"
         strokeLinecap="round"
       />
 
-      {/* Slab mid-right — tiny Y-split */}
+
+      {/* ═══════════════════════════════════════════════
+          ISOLATED DETAILS — sparse, purposeful
+          ═══════════════════════════════════════════════ */}
+
+      {/* Hairline crack in top-left slab */}
       <path
-        d="M1550,200 L1558,230 L1565,260"
+        d="M180,80 C188,115 195,155 200,195"
         stroke="rgba(0,240,255,0.06)"
         strokeWidth="0.4"
         strokeLinecap="round"
       />
+
+      {/* Hairline in bottom-right slab */}
       <path
-        d="M1558,230 L1572,250"
+        d="M1720,920 C1728,950 1735,985 1740,1015"
         stroke="rgba(0,240,255,0.05)"
         strokeWidth="0.3"
         strokeLinecap="round"
       />
+
+      {/* Utility mark — small circle-cross (surveyor's mark on concrete).
+          One subtle detail that says "this is real infrastructure." */}
+      <circle
+        cx="270" cy="700"
+        r="8"
+        stroke="rgba(0,240,255,0.06)"
+        strokeWidth="0.5"
+      />
+      <line x1="262" y1="700" x2="278" y2="700" stroke="rgba(0,240,255,0.06)" strokeWidth="0.4" />
+      <line x1="270" y1="692" x2="270" y2="708" stroke="rgba(0,240,255,0.06)" strokeWidth="0.4" />
+
+      {/* Expansion joint detail — one joint has the rubber
+          filler strip visible (two tight parallel lines) */}
+      <line x1="848" y1="0" x2="848" y2="1080" stroke="rgba(0,240,255,0.04)" strokeWidth="0.4" />
+      <line x1="852" y1="0" x2="852" y2="1080" stroke="rgba(0,240,255,0.04)" strokeWidth="0.4" />
+
+      {/* Aggregate spot — tiny cluster of dots where concrete
+          surface has worn revealing stones beneath */}
+      <circle cx="1450" cy="180" r="1.2" fill="rgba(0,240,255,0.04)" />
+      <circle cx="1454" cy="183" r="0.8" fill="rgba(0,240,255,0.035)" />
+      <circle cx="1448" cy="185" r="1" fill="rgba(0,240,255,0.04)" />
+      <circle cx="1452" cy="178" r="0.7" fill="rgba(0,240,255,0.03)" />
+      <circle cx="1456" cy="186" r="0.9" fill="rgba(0,240,255,0.035)" />
     </svg>
   );
 }
