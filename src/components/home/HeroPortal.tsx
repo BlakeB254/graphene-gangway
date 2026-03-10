@@ -24,10 +24,10 @@ export function HeroPortal() {
   const timerProgress = useMotionValue(0);
 
   useEffect(() => {
-    // Hold near zero while CSS flicker plays (1.2s), then ramp through swap + shift
+    // Hold near zero during flicker (1.2s) + bright hold (0.3s), then ramp
     const controls = animate(timerProgress, [0, 0.03, 0.55], {
       duration: 2.5,
-      times: [0, 0.48, 1],
+      times: [0, 0.6, 1],
       ease: ["linear", "easeOut"],
     });
     return () => controls.stop();
