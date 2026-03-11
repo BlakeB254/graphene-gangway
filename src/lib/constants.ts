@@ -58,6 +58,7 @@ export const NAV_LINKS: NavLink[] = [
   { href: "/packages/launch", label: "Packages" },
   { href: "/community", label: "Our Community" },
   { href: "/about", label: "About" },
+  { href: "/book", label: "Book a Call" },
 ];
 
 export const SOCIAL_LINKS = {

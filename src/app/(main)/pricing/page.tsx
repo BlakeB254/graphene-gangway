@@ -6,6 +6,7 @@ import { ScrollAnimation } from "@/components/common/ScrollAnimation";
 import { SectionWrapper } from "@/components/common/SectionWrapper";
 import { Badge } from "@/components/common/Badge";
 import { PerformanceGuarantee } from "@/components/sections/PerformanceGuarantee";
+import { InquiryForm } from "@/components/forms/InquiryForm";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -195,7 +196,7 @@ export default function PricingPage() {
 
                   {/* CTA */}
                   <Link
-                    href="/contact"
+                    href="/book"
                     className={cn(
                       "group inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 text-center font-bold transition-all duration-300",
                       isPopular
@@ -388,22 +389,23 @@ export default function PricingPage() {
         </div>
       </SectionWrapper>
 
-      {/* ── Final CTA ────────────────────────────── */}
-      <SectionWrapper dark className="text-center">
+      {/* ── Final CTA + Inquiry Form ──────────────── */}
+      <SectionWrapper dark>
         <ScrollAnimation variant="fade-up">
-          <h2 className="font-[family-name:var(--font-display)] text-4xl tracking-wider text-cyan-neon text-glow-cyan">
-            READY TO LAUNCH?
-          </h2>
-          <p className="mx-auto mt-4 max-w-md text-ice-white/60">
-            Let&apos;s talk about your goals and find the right package for you.
-          </p>
-          <Link
-            href="/contact"
-            className="group mt-8 inline-flex items-center gap-2 rounded-lg bg-cyan-neon px-8 py-4 font-[family-name:var(--font-display)] text-lg tracking-wider text-dark-deep transition-all duration-300 hover:scale-105 hover:shadow-[0_0_24px_rgba(0,240,255,0.3)]"
-          >
-            GET STARTED
-            <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-          </Link>
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="font-[family-name:var(--font-display)] text-4xl tracking-wider text-cyan-neon text-glow-cyan">
+              READY TO LAUNCH?
+            </h2>
+            <p className="mx-auto mt-4 max-w-md text-ice-white/60">
+              Tell us about your project and we&apos;ll get back to you within
+              24 hours with a custom proposal.
+            </p>
+          </div>
+        </ScrollAnimation>
+        <ScrollAnimation variant="fade-up" delay={0.1}>
+          <div className="mx-auto mt-10 max-w-xl rounded-xl border border-dark-mid bg-dark-surface/40 p-8">
+            <InquiryForm source="pricing-page" />
+          </div>
         </ScrollAnimation>
       </SectionWrapper>
     </div>
