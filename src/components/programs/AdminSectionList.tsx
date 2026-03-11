@@ -22,6 +22,7 @@ const SECTION_TYPES: { value: ProgramSectionType; label: string }[] = [
   { value: "cta", label: "Call to Action" },
   { value: "video", label: "Video" },
   { value: "embed", label: "Embed (HTML)" },
+  { value: "cards", label: "Cards Grid" },
 ];
 
 function getDefaultContent(type: ProgramSectionType): Record<string, unknown> {
@@ -36,6 +37,7 @@ function getDefaultContent(type: ProgramSectionType): Record<string, unknown> {
     case "cta": return { heading: "Ready to start?", primaryLabel: "Get Started", primaryHref: "/contact" };
     case "video": return { url: "", caption: "" };
     case "embed": return { html: "" };
+    case "cards": return { columns: 3, items: [{ title: "Card Title", description: "Description", icon: "Layers" }] };
   }
 }
 

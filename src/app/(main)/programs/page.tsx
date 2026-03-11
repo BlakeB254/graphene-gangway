@@ -12,7 +12,13 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function ProgramsPage() {
-  const programs = await listPrograms("active");
+  let programs: Awaited<ReturnType<typeof listPrograms>> = [];
+
+  try {
+    programs = await listPrograms("active");
+  } catch {
+    // DB not configured or table missing — degrade gracefully
+  }
 
   return (
     <>

@@ -6,7 +6,12 @@ import { listPrograms } from "@/lib/programs";
 import { Badge } from "@/components/common/Badge";
 
 export default async function AdminProgramsPage() {
-  const programs = await listPrograms();
+  let programs: Awaited<ReturnType<typeof listPrograms>> = [];
+  try {
+    programs = await listPrograms();
+  } catch {
+    // DB not configured or table missing
+  }
 
   const statusBadge = (status: string) => {
     switch (status) {

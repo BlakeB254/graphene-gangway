@@ -8,8 +8,9 @@ import { ScrollAnimation } from "@/components/common/ScrollAnimation";
 import type { ProgramSectionRow } from "@/lib/shared/types";
 import type {
   RichTextContent, FAQContent, TimelineContent, TestimonialsContent,
-  GalleryContent, StatsContent, DocumentsContent, CTAContent, VideoContent,
+  GalleryContent, StatsContent, DocumentsContent, CTAContent, VideoContent, CardsContent,
 } from "@/lib/shared/types";
+import * as LucideIcons from "lucide-react";
 
 function RichTextSection({ title, content }: { title?: string | null; content: RichTextContent }) {
   return (
@@ -152,6 +153,87 @@ function VideoSection({ title, content }: { title?: string | null; content: Vide
   );
 }
 
+function CardsSection({ title, content }: { title?: string | null; content: CardsContent }) {
+  const cols = content.columns ?? 3;
+  const gridClass =
+    cols === 2 ? "grid-cols-1 sm:grid-cols-2" :
+    cols === 4 ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" :
+    "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
+
+  return (
+    <SectionWrapper>
+      {title && (
+        <ScrollAnimation>
+          <h2 className="mb-10 font-[family-name:var(--font-display)] text-3xl tracking-wider text-ice-white md:text-4xl">
+            {title}
+          </h2>
+        </ScrollAnimation>
+      )}
+      <div className={`grid ${gridClass} gap-6`}>
+        {content.items.map((card, i) => {
+          const IconComponent = card.icon
+            ? (LucideIcons as unknown as Record<string, React.ComponentType<{ className?: string }>>)[card.icon]
+            : null;
+          const accentStyle = card.accentColor ? { color: card.accentColor } : {};
+          const borderHover = card.accentColor
+            ? { "--card-accent": card.accentColor } as React.CSSProperties
+            : {};
+
+          const inner = (
+            <div
+              className="group relative h-full overflow-hidden rounded-xl border border-dark-mid bg-dark-surface p-6 transition-all hover:border-cyan-neon/30 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(0,240,255,0.06)]"
+              style={borderHover}
+            >
+              {IconComponent && (
+                <div className="mb-4 inline-flex rounded-lg bg-dark-deep p-3" style={accentStyle}>
+                  <IconComponent className="h-6 w-6" />
+                </div>
+              )}
+              <h3 className="mb-2 font-[family-name:var(--font-display)] text-xl tracking-wider text-ice-white">
+                {card.title}
+              </h3>
+              <p className="text-sm leading-relaxed text-ice-white/60">{card.description}</p>
+              {card.tags && card.tags.length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {card.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full bg-dark-deep px-3 py-1 text-xs text-ice-white/50"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+              {card.href && (
+                <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-cyan-neon">
+                  Explore <LucideIcons.ArrowRight className="h-3.5 w-3.5" />
+                </span>
+              )}
+            </div>
+          );
+
+          return (
+            <ScrollAnimation key={i} delay={i * 0.08}>
+              {card.href ? (
+                <Link
+                  href={card.href}
+                  {...(card.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className="block h-full"
+                >
+                  {inner}
+                </Link>
+              ) : (
+                inner
+              )}
+            </ScrollAnimation>
+          );
+        })}
+      </div>
+    </SectionWrapper>
+  );
+}
+
 interface ProgramSectionRendererProps {
   section: ProgramSectionRow;
 }
@@ -179,6 +261,8 @@ export function ProgramSectionRenderer({ section }: ProgramSectionRendererProps)
       return <CTASection content={content as unknown as CTAContent} />;
     case "video":
       return <VideoSection title={section.title} content={content as unknown as VideoContent} />;
+    case "cards":
+      return <CardsSection title={section.title} content={content as unknown as CardsContent} />;
     case "embed":
       return (
         <SectionWrapper>

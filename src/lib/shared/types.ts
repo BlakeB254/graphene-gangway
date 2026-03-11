@@ -93,7 +93,8 @@ export type ProgramSectionType =
   | "documents"
   | "cta"
   | "video"
-  | "embed";
+  | "embed"
+  | "cards";
 
 export interface ProgramRow {
   id: number;
@@ -177,4 +178,16 @@ export interface VideoContent {
 export interface EmbedContent {
   html: string;
   aspectRatio?: string;
+}
+
+export interface CardsContent {
+  columns?: 2 | 3 | 4;
+  items: {
+    title: string;
+    description: string;
+    icon?: string;
+    href?: string;
+    tags?: string[];
+    accentColor?: string;
+  }[];
 }

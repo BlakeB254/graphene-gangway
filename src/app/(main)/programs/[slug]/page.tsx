@@ -12,12 +12,16 @@ export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
   const { slug } = await params;
-  const program = await getProgramBySlug(slug);
-  if (!program) return { title: "Program Not Found" };
-  return {
-    title: program.title,
-    description: program.tagline || program.description || `Learn about ${program.title} at Graphene Gangway.`,
-  };
+  try {
+    const program = await getProgramBySlug(slug);
+    if (!program) return { title: "Program Not Found" };
+    return {
+      title: program.title,
+      description: program.tagline || program.description || `Learn about ${program.title} at Graphene Gangway.`,
+    };
+  } catch {
+    return { title: "Program Not Found" };
+  }
 }
 
 export default async function ProgramDetailPage({
@@ -26,13 +30,24 @@ export default async function ProgramDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const program = await getProgramBySlug(slug);
+
+  let program;
+  try {
+    program = await getProgramBySlug(slug);
+  } catch {
+    notFound();
+  }
 
   if (!program || program.status === "draft") {
     notFound();
   }
 
-  const sections = await listProgramSections(program.id);
+  let sections: Awaited<ReturnType<typeof listProgramSections>> = [];
+  try {
+    sections = await listProgramSections(program.id);
+  } catch {
+    // DB error — show page without sections
+  }
   const visibleSections = sections.filter((s) => s.is_visible);
 
   return (
