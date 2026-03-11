@@ -209,17 +209,17 @@ export function HeroPortal() {
 
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <Link
-                href="/yn-academy"
+                href="/pricing"
                 className="group inline-flex items-center justify-center gap-2 bg-cyan-neon px-7 py-3.5 font-[family-name:var(--font-display)] tracking-wider text-dark-deep transition-all duration-300 hover:shadow-[0_0_40px_rgba(0,240,255,0.35)]"
               >
-                Explore YN Academy
+                Get Started
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
               <Link
-                href="/services"
+                href="/assessment"
                 className="inline-flex items-center justify-center gap-2 border border-ice-white/15 px-7 py-3.5 font-[family-name:var(--font-display)] tracking-wider text-ice-white/70 transition-all duration-300 hover:border-cyan-neon/50 hover:text-cyan-neon"
               >
-                Get Tech Services
+                Take the Assessment
               </Link>
             </div>
           </div>
