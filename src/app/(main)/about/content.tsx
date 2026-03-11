@@ -1,13 +1,21 @@
 "use client";
 
-import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { GlowDivider } from "@/components/animations/GlowDivider";
-import { HexGrid } from "@/components/backgrounds/HexGrid";
-import { Target, Eye, Zap } from "lucide-react";
+import {
+  Target,
+  Eye,
+  Zap,
+  ArrowRight,
+  Globe,
+  Palette,
+  Code,
+  Users,
+  Heart,
+} from "lucide-react";
+import { ScrollAnimation } from "@/components/common/ScrollAnimation";
+import { SectionWrapper } from "@/components/common/SectionWrapper";
+import { Badge } from "@/components/common/Badge";
 
 const VALUES = [
   {
@@ -27,6 +35,27 @@ const VALUES = [
     title: "Action Over Talk",
     description:
       "We don't wait for permission or perfect conditions. We build, we iterate, we ship. Progress happens when you start.",
+  },
+];
+
+const SERVICES_OVERVIEW = [
+  {
+    icon: Globe,
+    title: "Web Development",
+    description:
+      "Custom websites and web applications built to serve your vision and your community.",
+  },
+  {
+    icon: Palette,
+    title: "Brand & Design",
+    description:
+      "Logo design, brand kits, and visual identity packages at prices the neighborhood can afford.",
+  },
+  {
+    icon: Code,
+    title: "Tech Solutions",
+    description:
+      "IT support, digital tools setup, and custom software to help local businesses thrive.",
   },
 ];
 
@@ -51,262 +80,276 @@ const JOURNEY = [
   },
 ];
 
-function JourneySection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  // Parallax the vertical line — it draws as you scroll
-  const lineScaleY = useTransform(scrollYProgress, [0.1, 0.7], [0, 1]);
-
-  // Each milestone parallaxes at a staggered rate
-  const y0 = useTransform(scrollYProgress, [0.1, 0.9], [80, -20]);
-  const y1 = useTransform(scrollYProgress, [0.15, 0.9], [100, -30]);
-  const y2 = useTransform(scrollYProgress, [0.2, 0.9], [120, -40]);
-  const offsets = [y0, y1, y2];
-
-  // Glow pulses on the timeline dots
-  const dotGlow0 = useTransform(scrollYProgress, [0.15, 0.35], [0, 1]);
-  const dotGlow1 = useTransform(scrollYProgress, [0.3, 0.5], [0, 1]);
-  const dotGlow2 = useTransform(scrollYProgress, [0.45, 0.65], [0, 1]);
-  const dotGlows = [dotGlow0, dotGlow1, dotGlow2];
-
-  return (
-    <section ref={sectionRef} className="relative overflow-hidden py-24 md:py-32">
-      <div className="mx-auto max-w-4xl px-6">
-        <ScrollReveal>
-          <p className="mb-3 text-center font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.3em] text-cyan-neon/70">
-            Where we&apos;ve been
-          </p>
-          <h2 className="text-center font-[family-name:var(--font-display)] text-4xl tracking-wider text-ice-white md:text-5xl">
-            OUR JOURNEY
-          </h2>
-        </ScrollReveal>
-
-        <div className="relative mt-20">
-          {/* Animated vertical line — draws as you scroll */}
-          <motion.div
-            style={{ scaleY: lineScaleY }}
-            className="absolute left-8 top-0 bottom-0 w-px origin-top bg-gradient-to-b from-cyan-neon/50 via-cyan-neon/30 to-transparent md:left-1/2 md:-translate-x-1/2"
-          />
-
-          <div className="space-y-20 md:space-y-28">
-            {JOURNEY.map((item, i) => {
-              const isEven = i % 2 === 0;
-              return (
-                <motion.div
-                  key={item.year}
-                  style={{ y: offsets[i] }}
-                  className="relative"
-                >
-                  {/* ── Mobile: always left-aligned ── */}
-                  <div className="flex gap-8 md:hidden">
-                    <div className="relative flex-shrink-0">
-                      <motion.div
-                        style={{ opacity: dotGlows[i] }}
-                        className="absolute -inset-3 rounded-full bg-cyan-neon/20 blur-lg"
-                      />
-                      <div className="relative flex h-16 w-16 items-center justify-center rounded-full border border-cyan-neon/30 bg-dark-deep">
-                        <span className="font-[family-name:var(--font-display)] text-lg text-cyan-neon">
-                          {item.year}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="pt-3">
-                      <h3 className="mb-2 font-[family-name:var(--font-display)] text-2xl text-ice-white">
-                        {item.title}
-                      </h3>
-                      <p className="text-sm leading-relaxed text-ice-white/55">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* ── Desktop: alternating left/right ── */}
-                  <div className="hidden md:flex md:items-center md:gap-12">
-                    {/* Left column */}
-                    <div className={`flex-1 ${isEven ? "text-right" : ""}`}>
-                      {isEven && (
-                        <ScrollReveal variant="fadeRight" delay={i * 0.1}>
-                          <h3 className="mb-2 font-[family-name:var(--font-display)] text-3xl text-ice-white">
-                            {item.title}
-                          </h3>
-                          <p className="text-sm leading-relaxed text-ice-white/55">
-                            {item.description}
-                          </p>
-                        </ScrollReveal>
-                      )}
-                    </div>
-
-                    {/* Center dot */}
-                    <div className="relative flex-shrink-0">
-                      <motion.div
-                        style={{ opacity: dotGlows[i] }}
-                        className="absolute -inset-4 rounded-full bg-cyan-neon/20 blur-xl"
-                      />
-                      <div className="relative flex h-16 w-16 items-center justify-center rounded-full border border-cyan-neon/30 bg-dark-deep">
-                        <span className="font-[family-name:var(--font-display)] text-lg text-cyan-neon">
-                          {item.year}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Right column */}
-                    <div className={`flex-1 ${!isEven ? "" : ""}`}>
-                      {!isEven && (
-                        <ScrollReveal variant="fadeLeft" delay={i * 0.1}>
-                          <h3 className="mb-2 font-[family-name:var(--font-display)] text-3xl text-ice-white">
-                            {item.title}
-                          </h3>
-                          <p className="text-sm leading-relaxed text-ice-white/55">
-                            {item.description}
-                          </p>
-                        </ScrollReveal>
-                      )}
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 export function AboutContent() {
   return (
-    <div className="min-h-screen">
-      {/* Hero */}
-      <section className="relative overflow-hidden py-32">
-        <HexGrid />
-        <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
-          <ScrollReveal>
-            <p className="mb-4 font-[family-name:var(--font-script)] text-xl text-cyan-dim">
-              Who we are. Why we do it.
+    <>
+      {/* ── Hero ───────────────────────────────────────────── */}
+      <SectionWrapper>
+        <ScrollAnimation>
+          <Badge variant="accent" className="mb-6">
+            <Heart className="mr-1.5 h-3 w-3" />
+            Who We Are
+          </Badge>
+          <h1 className="mb-4 font-[family-name:var(--font-display)] text-5xl tracking-wider text-ice-white md:text-6xl lg:text-7xl">
+            ABOUT GRAPHENE GANGWAY
+          </h1>
+          <p className="max-w-2xl text-lg leading-relaxed text-ice-white/60">
+            A community technology initiative bridging the digital divide in
+            North Lawndale, Chicago — through education, affordable services,
+            and grassroots action.
+          </p>
+        </ScrollAnimation>
+      </SectionWrapper>
+
+      {/* ── Mission Statement ──────────────────────────────── */}
+      <SectionWrapper dark>
+        <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
+          <ScrollAnimation variant="slide-left">
+            <div className="flex justify-center">
+              <Image
+                src="/logos/graphene-gangway-transparent.png"
+                alt="Graphene Gangway — Full Logo"
+                width={768}
+                height={1376}
+                quality={100}
+                className="h-auto w-64 object-contain glow-cyan-strong md:w-80"
+              />
+            </div>
+          </ScrollAnimation>
+
+          <ScrollAnimation variant="slide-right" delay={0.1}>
+            <p className="mb-2 font-[family-name:var(--font-mono)] text-xs uppercase tracking-widest text-cyan-neon">
+              Our Mission
             </p>
-            <h1 className="mb-6 font-[family-name:var(--font-display)] text-5xl tracking-wider text-cyan-neon text-glow-cyan md:text-7xl">
-              ABOUT US
-            </h1>
-            <p className="mx-auto max-w-2xl text-lg text-ice-white/70">
-              Graphene Gangway is a community technology initiative in North
-              Lawndale, Chicago. We&apos;re bridging the digital divide through
-              education, services, and grassroots action.
-            </p>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      <GlowDivider />
-
-      {/* Mission — side-by-side with original logo */}
-      <section className="bg-dark-surface/50 px-6 py-24">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
-            <ScrollReveal variant="fadeLeft">
-              <div className="flex justify-center">
-                <Image
-                  src="/logos/graphene-gangway-transparent.png"
-                  alt="Graphene Gangway — Full Logo"
-                  width={768}
-                  height={1376}
-                  quality={100}
-                  className="h-auto w-64 object-contain glow-cyan-strong md:w-80"
-                />
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal variant="fadeRight" delay={0.1}>
-              <h2 className="mb-8 font-[family-name:var(--font-display)] text-4xl text-ice-white">
-                OUR MISSION
-              </h2>
-              <div className="space-y-6 text-lg text-ice-white/70">
-                <p>
-                  North Lawndale has been systematically disinvested for decades.
-                  42% of residents live below the poverty line. Most households
-                  don&apos;t have broadband. The &quot;digital economy&quot;
-                  everyone talks about? It&apos;s passing this neighborhood by.
-                </p>
-                <p className="font-[family-name:var(--font-script)] text-2xl text-cyan-neon">
-                  We&apos;re not waiting for someone to save us. We&apos;re
-                  building our own bridge.
-                </p>
-                <p>
-                  Graphene Gangway provides free technology education, affordable
-                  tech services, and community programs that put real tools in
-                  people&apos;s hands. Not charity — capacity.
-                </p>
-              </div>
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
-
-      <GlowDivider />
-
-      {/* Values */}
-      <section className="px-6 py-24">
-        <div className="mx-auto max-w-5xl">
-          <ScrollReveal>
-            <h2 className="mb-16 text-center font-[family-name:var(--font-display)] text-4xl text-ice-white">
-              WHAT WE STAND FOR
+            <h2 className="mb-6 font-[family-name:var(--font-display)] text-3xl tracking-wider text-ice-white md:text-4xl">
+              TECHNOLOGY FOR THE PEOPLE
             </h2>
-          </ScrollReveal>
+            <div className="space-y-4 text-ice-white/60">
+              <p>
+                We believe technology should be a bridge, not a barrier. Too
+                many communities have been left behind by the digital economy
+                — locked out by cost, access, and systemic disinvestment.
+              </p>
+              <p className="font-[family-name:var(--font-script)] text-2xl text-cyan-neon">
+                We&apos;re not waiting for someone to save us. We&apos;re
+                building our own bridge.
+              </p>
+              <p>
+                Graphene Gangway provides free technology education, affordable
+                tech services, and community programs that put real tools in
+                people&apos;s hands. Not charity — capacity.
+              </p>
+            </div>
+          </ScrollAnimation>
+        </div>
+      </SectionWrapper>
 
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            {VALUES.map((value, i) => (
-              <ScrollReveal key={value.title} delay={i * 0.15}>
-                <div className="text-center">
-                  <value.icon className="mx-auto mb-4 h-12 w-12 text-cyan-neon" />
-                  <h3 className="mb-3 font-[family-name:var(--font-display)] text-2xl text-ice-white">
-                    {value.title}
+      {/* ── The Story ──────────────────────────────────────── */}
+      <SectionWrapper>
+        <ScrollAnimation>
+          <p className="mb-2 font-[family-name:var(--font-mono)] text-xs uppercase tracking-widest text-cyan-neon">
+            Where It Started
+          </p>
+          <h2 className="mb-4 font-[family-name:var(--font-display)] text-3xl tracking-wider text-ice-white md:text-4xl">
+            OUR STORY
+          </h2>
+          <p className="mb-12 max-w-3xl text-ice-white/50">
+            Graphene Gangway was founded in North Lawndale, Chicago — a
+            neighborhood on the West Side where 42% of residents live below the
+            poverty line and most households lack reliable broadband. The
+            &quot;digital economy&quot; everyone talks about? It was passing
+            this community by.
+          </p>
+        </ScrollAnimation>
+
+        <div className="space-y-8">
+          {JOURNEY.map((item, i) => (
+            <ScrollAnimation key={item.year} delay={i * 0.1}>
+              <div className="flex gap-6 rounded-xl border border-dark-mid bg-dark-surface/30 p-6 transition-colors hover:border-cyan-neon/30 md:p-8">
+                <div className="flex-shrink-0">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full border border-cyan-neon/30 bg-dark-deep">
+                    <span className="font-[family-name:var(--font-display)] text-lg text-cyan-neon">
+                      {item.year}
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="mb-2 font-[family-name:var(--font-display)] text-xl tracking-wider text-ice-white">
+                    {item.title.toUpperCase()}
                   </h3>
-                  <p className="text-sm leading-relaxed text-ice-white/60">
-                    {value.description}
+                  <p className="text-sm leading-relaxed text-ice-white/50">
+                    {item.description}
                   </p>
                 </div>
-              </ScrollReveal>
-            ))}
-          </div>
+              </div>
+            </ScrollAnimation>
+          ))}
         </div>
-      </section>
+      </SectionWrapper>
 
-      <GlowDivider />
-
-      {/* Journey — parallax timeline */}
-      <JourneySection />
-
-      <GlowDivider />
-
-      {/* CTA */}
-      <section className="px-6 py-24 text-center">
-        <ScrollReveal>
-          <h2 className="mb-4 font-[family-name:var(--font-display)] text-4xl text-cyan-neon text-glow-cyan">
-            JOIN THE MOVEMENT
-          </h2>
-          <p className="mx-auto mb-8 max-w-md text-ice-white/60">
-            Whether you want to learn, build, volunteer, or partner — there&apos;s
-            a place for you here.
+      {/* ── Values ─────────────────────────────────────────── */}
+      <SectionWrapper dark>
+        <ScrollAnimation>
+          <p className="mb-2 font-[family-name:var(--font-mono)] text-xs uppercase tracking-widest text-cyan-neon">
+            What We Stand For
           </p>
-          <div className="flex flex-col justify-center gap-4 sm:flex-row">
+          <h2 className="mb-12 font-[family-name:var(--font-display)] text-3xl tracking-wider text-ice-white md:text-4xl">
+            OUR VALUES
+          </h2>
+        </ScrollAnimation>
+
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          {VALUES.map((value, i) => (
+            <ScrollAnimation key={value.title} delay={i * 0.15}>
+              <div className="text-center">
+                <value.icon className="mx-auto mb-4 h-10 w-10 text-cyan-neon" />
+                <h3 className="mb-3 font-[family-name:var(--font-display)] text-xl tracking-wider text-ice-white">
+                  {value.title.toUpperCase()}
+                </h3>
+                <p className="text-sm leading-relaxed text-ice-white/50">
+                  {value.description}
+                </p>
+              </div>
+            </ScrollAnimation>
+          ))}
+        </div>
+      </SectionWrapper>
+
+      {/* ── Team ───────────────────────────────────────────── */}
+      <SectionWrapper>
+        <ScrollAnimation>
+          <p className="mb-2 font-[family-name:var(--font-mono)] text-xs uppercase tracking-widest text-cyan-neon">
+            The People
+          </p>
+          <h2 className="mb-4 font-[family-name:var(--font-display)] text-3xl tracking-wider text-ice-white md:text-4xl">
+            OUR TEAM
+          </h2>
+          <p className="mb-8 max-w-2xl text-ice-white/50">
+            Graphene Gangway is powered by people who believe in what this
+            community can become. We&apos;re builders, educators, and
+            organizers from North Lawndale and beyond.
+          </p>
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={0.1}>
+          <div className="rounded-xl border border-dashed border-cyan-neon/20 bg-dark-surface/20 p-12 text-center">
+            <Users className="mx-auto mb-4 h-10 w-10 text-cyan-neon/40" />
+            <p className="mb-2 font-[family-name:var(--font-display)] text-xl tracking-wider text-ice-white/70">
+              OUR TEAM IS GROWING
+            </p>
+            <p className="mx-auto max-w-md text-sm text-ice-white/40">
+              We&apos;re building out our team profiles. Check back soon to
+              meet the people behind the mission — or{" "}
+              <Link
+                href="/contact"
+                className="text-cyan-neon hover:underline"
+              >
+                reach out
+              </Link>{" "}
+              if you want to join us.
+            </p>
+          </div>
+        </ScrollAnimation>
+      </SectionWrapper>
+
+      {/* ── Services Overview ──────────────────────────────── */}
+      <SectionWrapper dark>
+        <ScrollAnimation>
+          <p className="mb-2 font-[family-name:var(--font-mono)] text-xs uppercase tracking-widest text-cyan-neon">
+            What We Offer
+          </p>
+          <h2 className="mb-4 font-[family-name:var(--font-display)] text-3xl tracking-wider text-ice-white md:text-4xl">
+            OUR SERVICES
+          </h2>
+          <p className="mb-12 max-w-2xl text-ice-white/50">
+            Affordable technology services built for small businesses,
+            nonprofits, and entrepreneurs in our community.
+          </p>
+        </ScrollAnimation>
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {SERVICES_OVERVIEW.map((service, i) => (
+            <ScrollAnimation key={service.title} delay={i * 0.1}>
+              <div className="rounded-xl border border-dark-mid bg-dark-surface/30 p-6 transition-colors hover:border-cyan-neon/30">
+                <service.icon className="mb-4 h-8 w-8 text-cyan-neon" />
+                <h3 className="mb-2 font-[family-name:var(--font-display)] text-lg tracking-wider text-ice-white">
+                  {service.title.toUpperCase()}
+                </h3>
+                <p className="text-sm leading-relaxed text-ice-white/50">
+                  {service.description}
+                </p>
+              </div>
+            </ScrollAnimation>
+          ))}
+        </div>
+
+        <ScrollAnimation delay={0.3}>
+          <div className="mt-10 text-center">
             <Link
-              href="/yn-academy"
-              className="inline-block bg-cyan-neon px-8 py-3 font-[family-name:var(--font-display)] text-lg tracking-wider text-dark-deep transition-colors duration-300 hover:bg-cyan-dim"
+              href="/services"
+              className="inline-flex items-center gap-2 rounded-lg border border-cyan-neon bg-cyan-neon/10 px-6 py-3 font-[family-name:var(--font-mono)] text-sm text-cyan-neon transition-colors hover:bg-cyan-neon/20"
             >
-              EXPLORE PROGRAMS
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-block border border-cyan-neon px-8 py-3 font-[family-name:var(--font-display)] text-lg tracking-wider text-cyan-neon transition-colors duration-300 hover:bg-cyan-neon/10"
-            >
-              GET IN TOUCH
+              View All Services
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-        </ScrollReveal>
-      </section>
-    </div>
+        </ScrollAnimation>
+      </SectionWrapper>
+
+      {/* ── Community Impact ───────────────────────────────── */}
+      <SectionWrapper>
+        <ScrollAnimation>
+          <div className="flex flex-col items-start gap-8 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="mb-2 font-[family-name:var(--font-mono)] text-xs uppercase tracking-widest text-cyan-neon">
+                Our Roots
+              </p>
+              <h2 className="mb-4 font-[family-name:var(--font-display)] text-3xl tracking-wider text-ice-white md:text-4xl">
+                COMMUNITY IMPACT
+              </h2>
+              <p className="max-w-xl text-ice-white/50">
+                Everything we build is rooted in North Lawndale. Our programs,
+                services, and outreach efforts are designed to create lasting
+                change — not quick fixes. See how we&apos;re making a
+                difference.
+              </p>
+            </div>
+            <Link
+              href="/community"
+              className="inline-flex items-center gap-2 rounded-lg border border-cyan-neon bg-cyan-neon/10 px-6 py-3 font-[family-name:var(--font-mono)] text-sm text-cyan-neon transition-colors hover:bg-cyan-neon/20"
+            >
+              Our Community
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </ScrollAnimation>
+      </SectionWrapper>
+
+      {/* ── CTA ────────────────────────────────────────────── */}
+      <SectionWrapper dark>
+        <ScrollAnimation>
+          <div className="text-center">
+            <p className="mb-2 font-[family-name:var(--font-mono)] text-xs uppercase tracking-widest text-cyan-neon">
+              Let&apos;s Build Together
+            </p>
+            <h2 className="mb-4 font-[family-name:var(--font-display)] text-3xl tracking-wider text-ice-white md:text-4xl">
+              READY TO WORK WITH US?
+            </h2>
+            <p className="mx-auto mb-10 max-w-2xl text-ice-white/50">
+              Whether you need a website, want to learn tech skills, or have a
+              project in mind — we&apos;re here to help. Start with a free
+              assessment and let&apos;s figure it out together.
+            </p>
+            <Link
+              href="/assessment"
+              className="inline-flex items-center gap-2 bg-cyan-neon px-8 py-3 font-[family-name:var(--font-display)] text-lg tracking-wider text-dark-deep transition-colors hover:bg-cyan-dim"
+            >
+              GET STARTED
+              <ArrowRight className="h-5 w-5" />
+            </Link>
+          </div>
+        </ScrollAnimation>
+      </SectionWrapper>
+    </>
   );
 }
