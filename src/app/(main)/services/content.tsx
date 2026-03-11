@@ -145,7 +145,7 @@ export function ServicesContent() {
               services for your goals and budget.
             </p>
             <Link
-              href="/contact"
+              href="/assessment"
               className="inline-flex items-center gap-2 rounded-lg bg-cyan-neon px-8 py-3 font-[family-name:var(--font-display)] text-lg tracking-wider text-dark-deep transition-colors duration-300 hover:bg-cyan-dim"
             >
               Take our free assessment
