@@ -40,6 +40,12 @@
   --color-dark-mid: #32363F;
   --color-ice-white: #E8FEFF;
 
+  /* Extended Brand Tokens */
+  --color-brand-success: #22C55E;
+  --color-brand-warning: #F59E0B;
+  --color-brand-accent-hover: #00D4E0;
+  --color-brand-accent-light: #66F5FF;
+
   /* Font Variables */
   --font-display: var(--font-display);
   --font-script: var(--font-script);
@@ -67,6 +73,10 @@
   --border: #32363F;
   --input: #32363F;
   --ring: #00B8C4;
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --accent-hover: #00D4E0;
+  --accent-light: #66F5FF;
 }
 
 @layer base {
@@ -207,6 +217,25 @@
 .texture-chainlink { animation: texture-cycle 10s ease-in-out 4s infinite; }
 .texture-circuits  { animation: texture-cycle 12s ease-in-out 7s infinite; }
 .texture-spray     { animation: texture-cycle 10s ease-in-out 9s infinite; }
+
+/* Badge utilities */
+.badge-success {
+  @apply rounded-full bg-brand-success/15 px-3 py-1 text-xs font-medium text-brand-success;
+}
+.badge-warning {
+  @apply rounded-full bg-brand-warning/15 px-3 py-1 text-xs font-medium text-brand-warning;
+}
+.badge-accent {
+  @apply rounded-full bg-cyan-neon/15 px-3 py-1 text-xs font-medium text-cyan-neon;
+}
+
+/* Section spacing */
+.section-padding {
+  @apply py-20 md:py-24 lg:py-28;
+}
+.section-container {
+  @apply mx-auto max-w-[1200px] px-5;
+}
 
 /* Radial gradient utility */
 .bg-gradient-radial {

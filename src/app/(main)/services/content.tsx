@@ -1,175 +1,158 @@
 "use client";
 
 import Link from "next/link";
-import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { GlowDivider } from "@/components/animations/GlowDivider";
-import { HexGrid } from "@/components/backgrounds/HexGrid";
-import { Code, Monitor, Wifi, Shield, Palette, Database } from "lucide-react";
+import {
+  Palette,
+  Briefcase,
+  Monitor,
+  Zap,
+  Brain,
+  ArrowRight,
+  type LucideIcon,
+} from "lucide-react";
+import { SERVICES } from "@/lib/services-data";
+import { ScrollAnimation } from "@/components/common/ScrollAnimation";
+import { cn } from "@/lib/utils";
 
-const SERVICES = [
-  {
-    icon: Code,
-    title: "Web Development",
-    description:
-      "Custom websites, web applications, and e-commerce platforms built with modern technologies. From landing pages to full-stack solutions.",
-  },
-  {
-    icon: Monitor,
-    title: "IT Support",
-    description:
-      "Hardware setup, troubleshooting, network configuration, and ongoing tech support for small businesses and community organizations.",
-  },
-  {
-    icon: Palette,
-    title: "Digital Design",
-    description:
-      "Brand identity, logo design, social media graphics, and marketing materials that make your business stand out.",
-  },
-  {
-    icon: Wifi,
-    title: "Network Setup",
-    description:
-      "Wi-Fi installation, network infrastructure, and connectivity solutions for offices, community centers, and events.",
-  },
-  {
-    icon: Shield,
-    title: "Cybersecurity",
-    description:
-      "Security assessments, data protection consulting, and digital safety training for organizations of all sizes.",
-  },
-  {
-    icon: Database,
-    title: "Data & Analytics",
-    description:
-      "Database management, reporting dashboards, and data-driven insights to help you make smarter decisions.",
-  },
-];
-
-const PROCESS_STEPS = [
-  {
-    step: "01",
-    title: "Discovery",
-    description: "We learn about your business, goals, and challenges.",
-  },
-  {
-    step: "02",
-    title: "Strategy",
-    description: "We design a solution that fits your needs and budget.",
-  },
-  {
-    step: "03",
-    title: "Build",
-    description: "Our team brings the plan to life with modern tools.",
-  },
-  {
-    step: "04",
-    title: "Launch & Support",
-    description: "We deploy your project and stay on for ongoing support.",
-  },
-];
+const iconMap: Record<string, LucideIcon> = {
+  Palette,
+  Briefcase,
+  Monitor,
+  Zap,
+  Brain,
+};
 
 export function ServicesContent() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-dark-deep">
       {/* Hero */}
-      <section className="relative py-32 overflow-hidden">
-        <HexGrid />
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <ScrollReveal>
-            <p className="font-[family-name:var(--font-script)] text-xl text-cyan-dim mb-4">
-              Built by the community, for the community.
+      <section className="relative py-32 px-6">
+        <div className="relative z-10 max-w-4xl mx-auto text-center">
+          <ScrollAnimation variant="fade-up">
+            <p className="mb-4 font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.3em] text-cyan-neon/70">
+              What we build
             </p>
-            <h1 className="font-[family-name:var(--font-display)] text-5xl md:text-7xl text-cyan-neon text-glow-cyan tracking-wider mb-6">
-              TECH SERVICES
+            <h1 className="font-[family-name:var(--font-display)] text-5xl md:text-7xl text-ice-white tracking-wider mb-6">
+              OUR SERVICES
             </h1>
-            <p className="text-lg text-ice-white/70 max-w-2xl mx-auto">
-              Professional technology solutions at community prices. We help
-              small businesses and organizations in North Lawndale and beyond
-              build their digital presence.
+            <p className="text-lg md:text-xl text-ice-white/60 max-w-2xl mx-auto leading-relaxed">
+              Build your business. We&apos;ll build everything else.
             </p>
-          </ScrollReveal>
+          </ScrollAnimation>
         </div>
       </section>
-
-      <GlowDivider />
 
       {/* Services Grid */}
       <section className="py-24 px-6">
-        <div className="max-w-6xl mx-auto">
-          <ScrollReveal>
-            <h2 className="font-[family-name:var(--font-display)] text-4xl text-ice-white text-center mb-16">
-              WHAT WE DO
-            </h2>
-          </ScrollReveal>
+        <div className="mx-auto max-w-6xl">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {SERVICES.map((service, index) => {
+              const Icon = iconMap[service.icon] ?? Monitor;
+              const startingPrice = service.tiers[0]?.priceLabel ?? "";
+              const period = service.tiers[0]?.period;
+              const tierCount = service.tiers.length;
+              const isLastRow =
+                SERVICES.length % 3 !== 0 &&
+                index >= SERVICES.length - (SERVICES.length % 3);
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {SERVICES.map((service, i) => (
-              <ScrollReveal key={service.title} delay={i * 0.1}>
-                <div className="bg-dark-surface border border-dark-mid rounded-lg p-6 hover:border-cyan-neon/30 transition-all duration-300 corner-frame h-full">
-                  <service.icon className="w-10 h-10 text-cyan-neon mb-4" />
-                  <h3 className="font-[family-name:var(--font-display)] text-2xl text-ice-white mb-2">
-                    {service.title}
-                  </h3>
-                  <p className="text-ice-white/60 text-sm leading-relaxed">
-                    {service.description}
-                  </p>
-                </div>
-              </ScrollReveal>
-            ))}
+              return (
+                <ScrollAnimation
+                  key={service.id}
+                  variant="fade-up"
+                  delay={index * 0.1}
+                  className={cn(
+                    isLastRow &&
+                      SERVICES.length % 3 === 2 &&
+                      index === SERVICES.length - 2 &&
+                      "lg:col-start-1 lg:justify-self-end",
+                    isLastRow &&
+                      SERVICES.length % 3 === 2 &&
+                      index === SERVICES.length - 1 &&
+                      "lg:col-start-3 lg:justify-self-start",
+                    isLastRow &&
+                      SERVICES.length % 3 === 1 &&
+                      index === SERVICES.length - 1 &&
+                      "lg:col-start-2"
+                  )}
+                >
+                  <Link
+                    href={`/services/${service.slug}`}
+                    className="group block h-full"
+                  >
+                    <div className="relative flex h-full flex-col rounded-xl border border-dark-mid bg-dark-deep p-8 transition-all duration-300 hover:border-cyan-neon/30 hover:shadow-[0_0_40px_rgba(0,240,255,0.08)]">
+                      {/* Icon */}
+                      <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-lg border border-dark-mid bg-dark-deep">
+                        <Icon className="h-7 w-7 text-cyan-neon" />
+                      </div>
+
+                      {/* Name */}
+                      <h3 className="mb-1 font-[family-name:var(--font-display)] text-2xl tracking-wide text-ice-white">
+                        {service.name}
+                      </h3>
+
+                      {/* Tagline */}
+                      <p className="mb-4 font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.2em] text-cyan-neon/50">
+                        {service.tagline}
+                      </p>
+
+                      {/* Description */}
+                      <p className="mb-6 flex-1 text-sm leading-relaxed text-ice-white/50">
+                        {service.shortDescription}
+                      </p>
+
+                      {/* Price + Tier info */}
+                      <div className="mb-6 flex items-baseline justify-between border-t border-dark-mid pt-5">
+                        <p className="font-[family-name:var(--font-mono)] text-sm text-ice-white/60">
+                          Starting at{" "}
+                          <span className="text-cyan-neon">{startingPrice}</span>
+                          {period === "monthly" && (
+                            <span className="text-ice-white/30">/mo</span>
+                          )}
+                        </p>
+                        <span className="rounded-full border border-dark-mid px-3 py-0.5 font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-wider text-ice-white/40">
+                          {tierCount === 1
+                            ? "1 plan"
+                            : `${tierCount} plans available`}
+                        </span>
+                      </div>
+
+                      {/* View Details link */}
+                      <span className="inline-flex items-center gap-1.5 text-sm font-medium text-ice-white/30 transition-colors duration-200 group-hover:text-cyan-neon">
+                        View Details
+                        <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                      </span>
+
+                      {/* Bottom accent line */}
+                      <div className="absolute bottom-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-cyan-neon/10 to-transparent transition-all duration-500 group-hover:via-cyan-neon/30" />
+                    </div>
+                  </Link>
+                </ScrollAnimation>
+              );
+            })}
           </div>
         </div>
       </section>
-
-      <GlowDivider />
-
-      {/* Process */}
-      <section className="py-24 px-6 bg-dark-surface/50">
-        <div className="max-w-4xl mx-auto">
-          <ScrollReveal>
-            <h2 className="font-[family-name:var(--font-display)] text-4xl text-ice-white text-center mb-16">
-              OUR PROCESS
-            </h2>
-          </ScrollReveal>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {PROCESS_STEPS.map((step, i) => (
-              <ScrollReveal key={step.step} delay={i * 0.15}>
-                <div className="text-center">
-                  <span className="font-[family-name:var(--font-display)] text-5xl text-cyan-neon/20">
-                    {step.step}
-                  </span>
-                  <h3 className="font-[family-name:var(--font-display)] text-xl text-ice-white mt-2 mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="text-ice-white/50 text-sm">
-                    {step.description}
-                  </p>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <GlowDivider />
 
       {/* CTA */}
-      <section className="py-24 px-6 text-center">
-        <ScrollReveal>
-          <h2 className="font-[family-name:var(--font-display)] text-4xl text-cyan-neon text-glow-cyan mb-4">
-            LET&apos;S BUILD SOMETHING
-          </h2>
-          <p className="text-ice-white/60 mb-8 max-w-md mx-auto">
-            Tell us about your project. We&apos;ll put together a plan that
-            works for you.
-          </p>
-          <Link
-            href="/contact"
-            className="inline-block px-8 py-3 bg-cyan-neon text-dark-deep font-[family-name:var(--font-display)] text-lg tracking-wider hover:bg-cyan-dim transition-colors duration-300"
-          >
-            GET A QUOTE
-          </Link>
-        </ScrollReveal>
+      <section className="py-24 px-6">
+        <ScrollAnimation variant="fade-up">
+          <div className="mx-auto max-w-2xl rounded-xl border border-dark-mid bg-dark-deep p-12 text-center">
+            <h2 className="mb-3 font-[family-name:var(--font-display)] text-3xl tracking-wider text-ice-white md:text-4xl">
+              NOT SURE WHERE TO START?
+            </h2>
+            <p className="mb-8 text-ice-white/50">
+              Tell us about your business and we&apos;ll recommend the right
+              services for your goals and budget.
+            </p>
+            <Link
+              href="/assessment"
+              className="inline-flex items-center gap-2 rounded-lg bg-cyan-neon px-8 py-3 font-[family-name:var(--font-display)] text-lg tracking-wider text-dark-deep transition-colors duration-300 hover:bg-cyan-dim"
+            >
+              Take our free assessment
+              <ArrowRight className="h-5 w-5" />
+            </Link>
+          </div>
+        </ScrollAnimation>
       </section>
     </div>
   );
