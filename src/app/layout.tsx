@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { bebasNeue, caveat, outfit, jetbrainsMono } from "@/lib/fonts";
 import { SITE_CONFIG, SEO_DEFAULTS } from "@/lib/constants";
 import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
+import { AnalyticsProvider } from "@/components/analytics/AnalyticsProvider";
+import { GTMNoScript } from "@/components/analytics/GTMNoScript";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -49,7 +51,10 @@ export default function RootLayout({
         <SchemaMarkup />
       </head>
       <body className="min-h-screen bg-dark-deep text-ice-white">
-        {children}
+        <GTMNoScript />
+        <AnalyticsProvider>
+          {children}
+        </AnalyticsProvider>
       </body>
     </html>
   );
