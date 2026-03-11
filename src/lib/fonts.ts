@@ -1,27 +1,19 @@
-import { Bebas_Neue, Caveat, Outfit, JetBrains_Mono } from "next/font/google";
+// Font configuration using CSS variables
+// Google Fonts are loaded via @import in globals.css or link tags
+// This provides the CSS variable names for consistency
 
-export const bebasNeue = Bebas_Neue({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-display",
-  display: "swap",
-});
+export const fontVariables = [
+  "--font-display",
+  "--font-script",
+  "--font-body",
+  "--font-mono",
+] as const;
 
-export const caveat = Caveat({
-  subsets: ["latin"],
-  variable: "--font-script",
-  display: "swap",
-});
+// Font class string to apply to html element
+export const fontClassName = "";
 
-export const outfit = Outfit({
-  subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600", "700"],
-  variable: "--font-body",
-  display: "swap",
-});
-
-export const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
-});
+// Individual font variable references for backwards compatibility
+export const bebasNeue = { variable: "--font-display" };
+export const caveat = { variable: "--font-script" };
+export const outfit = { variable: "--font-body" };
+export const jetbrainsMono = { variable: "--font-mono" };

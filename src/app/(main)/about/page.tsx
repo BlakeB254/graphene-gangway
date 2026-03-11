@@ -4,7 +4,7 @@ import { AboutContent } from "./content";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Graphene Gangway is a community technology initiative in North Lawndale, Chicago. Learn about our mission, our team, and our vision for the future.",
+    "Graphene Gangway is a full-service digital agency in North Lawndale, Chicago. Learn about our mission, team, and commitment to empowering businesses through technology.",
   openGraph: {
     title: "About | Graphene Gangway",
     description:

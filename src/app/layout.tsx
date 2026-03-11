@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { bebasNeue, caveat, outfit, jetbrainsMono } from "@/lib/fonts";
 import { SITE_CONFIG, SEO_DEFAULTS } from "@/lib/constants";
 import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
 import "./globals.css";
@@ -41,12 +40,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${bebasNeue.variable} ${caveat.variable} ${outfit.variable} ${jetbrainsMono.variable}`}
-    >
+    <html lang="en">
       <head>
         <SchemaMarkup />
+        {/* Google Fonts loaded via stylesheet links for build-time compatibility */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@400..700&family=JetBrains+Mono:wght@100..800&family=Outfit:wght@200..700&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body className="min-h-screen bg-dark-deep text-ice-white">
         {children}

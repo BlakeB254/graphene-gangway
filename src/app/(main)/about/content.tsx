@@ -293,16 +293,16 @@ export function AboutContent() {
           </p>
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <Link
-              href="/yn-academy"
+              href="/services"
               className="inline-block bg-cyan-neon px-8 py-3 font-[family-name:var(--font-display)] text-lg tracking-wider text-dark-deep transition-colors duration-300 hover:bg-cyan-dim"
             >
-              EXPLORE PROGRAMS
+              SEE OUR SERVICES
             </Link>
             <Link
-              href="/contact"
+              href="/community"
               className="inline-block border border-cyan-neon px-8 py-3 font-[family-name:var(--font-display)] text-lg tracking-wider text-cyan-neon transition-colors duration-300 hover:bg-cyan-neon/10"
             >
-              GET IN TOUCH
+              OUR COMMUNITY
             </Link>
           </div>
         </ScrollReveal>

@@ -6,7 +6,6 @@ import { Menu, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { NAV_LINKS } from "@/lib/constants";
-import { AuthButton } from "@/components/auth/AuthButton";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import type { NavLink } from "@/lib/shared/types";
 
@@ -118,38 +117,44 @@ export function Navbar() {
                 <img
                   src="/logos/gg-mark.png"
                   alt="Graphene Gangway"
-                  style={{ height: 64, width: 'auto' }}
+                  style={{ height: 64, width: "auto" }}
                 />
               </Link>
             </div>
 
             {/* Desktop: left links */}
-            <div className="hidden flex-1 items-center justify-end gap-8 md:flex">
+            <div className="hidden flex-1 items-center justify-end gap-6 md:flex">
               {leftLinks.map((link) => (
                 <NavItem key={link.label} link={link} />
               ))}
             </div>
 
             {/* Desktop: center logo — fills full navbar height, base-aligned */}
-            <div className="hidden md:flex mx-8 flex-shrink-0 items-end" style={{ height: 64 }}>
+            <div
+              className="hidden md:flex mx-6 flex-shrink-0 items-end"
+              style={{ height: 64 }}
+            >
               <Link href="/" className="block" style={{ height: 64 }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/logos/gg-mark.png"
                   alt="Graphene Gangway"
-                  style={{ height: 64, width: 'auto' }}
+                  style={{ height: 64, width: "auto" }}
                 />
               </Link>
             </div>
 
-            {/* Desktop: right links + auth */}
-            <div className="hidden flex-1 items-center gap-8 md:flex">
+            {/* Desktop: right links + CTA */}
+            <div className="hidden flex-1 items-center gap-6 md:flex">
               {rightLinks.map((link) => (
                 <NavItem key={link.label} link={link} />
               ))}
-              <div className="ml-auto">
-                <AuthButton />
-              </div>
+              <Link
+                href="/assessment"
+                className="ml-auto rounded-lg bg-cyan-neon px-5 py-2 text-sm font-bold text-dark-deep transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,240,255,0.3)]"
+              >
+                Get Started
+              </Link>
             </div>
 
             {/* Mobile: hamburger */}

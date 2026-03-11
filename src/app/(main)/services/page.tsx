@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { ServicesContent } from "./content";
+import { ServicesHubContent } from "./content";
 
 export const metadata: Metadata = {
-  title: "Tech Services",
+  title: "Services",
   description:
-    "Professional web development, IT support, and digital solutions from Graphene Gangway. Serving North Lawndale and greater Chicago.",
+    "Professional brand kits, business plans, custom websites, social media automations, and AI knowledge bases. Full-service digital solutions from Graphene Gangway.",
   openGraph: {
-    title: "Tech Services | Graphene Gangway",
+    title: "Services | Graphene Gangway",
     description:
-      "Web development, IT support, and digital solutions for your business.",
+      "From brand identity to AI-powered business tools — everything your business needs to launch and grow.",
   },
 };
 
 export default function ServicesPage() {
-  return <ServicesContent />;
+  return <ServicesHubContent />;
 }

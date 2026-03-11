@@ -1,12 +1,12 @@
 import { HeroPortal } from "@/components/home/HeroPortal";
-import { NorthLawndaleCallout } from "@/components/home/NorthLawndaleCallout";
-import { MissionSection } from "@/components/home/MissionSection";
-import { ThreePortals } from "@/components/home/ThreePortals";
-import { ImpactCounters } from "@/components/home/ImpactCounters";
-import { MerchTeaser } from "@/components/home/MerchTeaser";
-import { ContactSection } from "@/components/home/ContactSection";
+import { ServicesOverview } from "@/components/home/ServicesOverview";
+import { AutomationExperience } from "@/components/home/AutomationExperience";
+import { PortfolioShowcase } from "@/components/home/PortfolioShowcase";
+import { LaunchPackageSpotlight } from "@/components/home/LaunchPackageSpotlight";
+import { SocialProof } from "@/components/home/SocialProof";
+import { CommunitySection } from "@/components/home/CommunitySection";
+import { CTAFooterSection } from "@/components/home/CTAFooterSection";
 import { GlowDivider } from "@/components/animations/GlowDivider";
-import { ScrollMarquee } from "@/components/animations/ScrollMarquee";
 import { FloatingOrbs } from "@/components/animations/FloatingOrbs";
 
 export default function Home() {
@@ -14,20 +14,20 @@ export default function Home() {
     <>
       <FloatingOrbs />
       <HeroPortal />
-      <NorthLawndaleCallout />
-      <ScrollMarquee text="COMMUNITY" direction="left" />
       <GlowDivider />
-      <MissionSection />
-      <ScrollMarquee text="TECHNOLOGY" direction="right" />
+      <ServicesOverview />
       <GlowDivider />
-      <ThreePortals />
+      <AutomationExperience />
       <GlowDivider />
-      <ImpactCounters />
-      <ScrollMarquee text="INNOVATION" direction="left" />
+      <PortfolioShowcase />
       <GlowDivider />
-      <MerchTeaser />
+      <LaunchPackageSpotlight />
       <GlowDivider />
-      <ContactSection />
+      <SocialProof />
+      <GlowDivider />
+      <CommunitySection />
+      <GlowDivider />
+      <CTAFooterSection />
     </>
   );
 }
