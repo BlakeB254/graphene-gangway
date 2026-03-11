@@ -142,13 +142,19 @@ export function Navbar() {
               </Link>
             </div>
 
-            {/* Desktop: right links + auth */}
+            {/* Desktop: right links + CTA */}
             <div className="hidden flex-1 items-center gap-8 md:flex">
               {rightLinks.map((link) => (
                 <NavItem key={link.label} link={link} />
               ))}
-              <div className="ml-auto">
+              <div className="ml-auto flex items-center gap-4">
                 <AuthButton />
+                <Link
+                  href="/pricing"
+                  className="rounded-lg bg-cyan-neon px-4 py-2 text-sm font-bold text-dark-deep transition-all hover:scale-105 hover:shadow-[0_0_15px_rgba(0,240,255,0.3)]"
+                >
+                  Get Started
+                </Link>
               </div>
             </div>
 

@@ -160,6 +160,17 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
               ))}
             </nav>
 
+            {/* CTA Button */}
+            <motion.div variants={linkVariants} className="mt-4">
+              <Link
+                href="/pricing"
+                onClick={handleClose}
+                className="inline-block rounded-lg bg-cyan-neon px-8 py-3 text-lg font-bold text-dark-deep transition-all hover:scale-105 hover:shadow-[0_0_15px_rgba(0,240,255,0.3)]"
+              >
+                Get Started
+              </Link>
+            </motion.div>
+
             {/* Social Links */}
             <div className="flex items-center justify-center gap-6 pb-12">
               {socialIcons.map(({ key, Icon }) => (
