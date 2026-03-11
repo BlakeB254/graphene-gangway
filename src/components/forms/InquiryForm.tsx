@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { AddressFinder, type AddressData } from "./AddressFinder";
 
 interface InquiryFormProps {
   serviceId?: string;
@@ -17,6 +18,11 @@ type FormState = "idle" | "submitting" | "success" | "error";
 export function InquiryForm({ serviceId, tierName, source = "website", className }: InquiryFormProps) {
   const [state, setState] = useState<FormState>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [address, setAddress] = useState<AddressData | null>(null);
+
+  const handleAddressChange = useCallback((data: AddressData | null) => {
+    setAddress(data);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -34,6 +40,9 @@ export function InquiryForm({ serviceId, tierName, source = "website", className
           name: data.get("name"),
           email: data.get("email"),
           phone: data.get("phone") || undefined,
+          address: address?.formatted || data.get("address") || undefined,
+          city: address?.city || undefined,
+          state: address?.state || undefined,
           service: serviceId || data.get("service") || undefined,
           tier: tierName || undefined,
           budget: data.get("budget") || undefined,
@@ -128,6 +137,18 @@ export function InquiryForm({ serviceId, tierName, source = "website", className
                 type="tel"
                 className="w-full rounded-lg border border-dark-mid bg-dark-deep px-4 py-3 text-sm text-ice-white placeholder-ice-white/30 transition-colors focus:border-cyan-neon/50 focus:outline-none"
                 placeholder="(555) 123-4567"
+              />
+            </div>
+
+            {/* Address */}
+            <div>
+              <label htmlFor="inq-address" className="mb-1.5 block text-sm font-medium text-ice-white/70">
+                Business address <span className="text-ice-white/30">(optional)</span>
+              </label>
+              <AddressFinder
+                name="address"
+                onChange={handleAddressChange}
+                placeholder="Start typing your address..."
               />
             </div>
 

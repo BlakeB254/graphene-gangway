@@ -4,7 +4,7 @@ import { getDb, initializeContactSubmissions } from "@/lib/db";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, phone, service, tier, budget, message, source } = body;
+    const { name, email, phone, address, city, state, service, tier, budget, message, source } = body;
 
     if (!name || typeof name !== "string") {
       return NextResponse.json({ error: "Name is required" }, { status: 400 });
@@ -27,6 +27,8 @@ export async function POST(request: Request) {
     const enrichedMessage = [
       message,
       phone ? `Phone: ${phone}` : null,
+      address ? `Address: ${address}` : null,
+      city && state ? `Location: ${city}, ${state}` : null,
       source ? `Source: ${source}` : null,
     ]
       .filter(Boolean)
@@ -47,6 +49,9 @@ export async function POST(request: Request) {
           name,
           email: email.toLowerCase(),
           phone,
+          address,
+          city,
+          state,
           service,
           tier,
           budget,
