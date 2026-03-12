@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -15,6 +15,15 @@ import { SITE_CONFIG } from "@/lib/constants";
 
 export function HeroPortal() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
@@ -24,7 +33,6 @@ export function HeroPortal() {
   const timerProgress = useMotionValue(0);
 
   useEffect(() => {
-    // Hold near zero during flicker (1.2s) + bright hold (0.3s), then ramp
     const controls = animate(timerProgress, [0, 0.03, 0.55], {
       duration: 2.5,
       times: [0, 0.6, 1],
@@ -39,70 +47,62 @@ export function HeroPortal() {
   );
 
   // ═══════════════════════════════════════════════════
-  // Phase 1 (0-6%):   Mini zoom — image scales up
-  // Phase 2 (6-16%):  Swap — image crossfades to video
-  // Phase 3 (16-55%): Shift — portal to left, text from right
-  // Phase 4 (55-100%): Stable, then section scrolls away
+  // Desktop: Portal shifts left, text slides in from right
+  // Mobile:  Portal fades/scales down, text fades in below (no overlap)
   // ═══════════════════════════════════════════════════
 
-  // ── Portal scale: mini zoom → hold → shrink for layout ──
+  // ── Portal scale ──
   const portalScale = useTransform(
     progress,
     [0, 0.06, 0.16, 0.55],
-    [0.92, 1.0, 1.0, 0.8]
+    isMobile
+      ? [0.92, 1.0, 1.0, 0.55]   // shrink more on mobile to make room for text
+      : [0.92, 1.0, 1.0, 0.8]
   );
 
-  // ── Portal position: centered → shift left ──
+  // ── Portal position: on mobile, shift up instead of left ──
   const portalX = useTransform(
     progress,
     [0, 0.16, 0.55],
-    ["0%", "0%", "-25%"]
+    isMobile ? ["0%", "0%", "0%"] : ["0%", "0%", "-25%"]
+  );
+  const portalY = useTransform(
+    progress,
+    [0, 0.16, 0.55],
+    isMobile ? ["0%", "0%", "-20%"] : ["0%", "0%", "0%"]
+  );
+
+  // ── Portal opacity: on mobile, fade out as text appears ──
+  const portalFade = useTransform(
+    progress,
+    [0.3, 0.5],
+    isMobile ? [1, 0.3] : [1, 1]
   );
 
   // ── Image: visible during zoom, fades during swap ──
-  const imageOpacity = useTransform(
-    progress,
-    [0.06, 0.16],
-    [1, 0]
-  );
+  const imageOpacity = useTransform(progress, [0.06, 0.16], [1, 0]);
 
   // ── Video: invisible, fades in during swap ──
-  const videoOpacity = useTransform(
-    progress,
-    [0.06, 0.16],
-    [0, 1]
-  );
+  const videoOpacity = useTransform(progress, [0.06, 0.16], [0, 1]);
 
-  // ── Ambient glow (follows portal, CSS flicker) ──
+  // ── Ambient glow ──
   const glowX = useTransform(
     progress,
     [0, 0.16, 0.55],
-    ["0%", "0%", "-25%"]
+    isMobile ? ["0%", "0%", "0%"] : ["0%", "0%", "-25%"]
   );
-  const glowOpacity = useTransform(
-    progress,
-    [0, 0.04, 0.55],
-    [0.15, 0.5, 0.2]
-  );
-  const glowScale = useTransform(
-    progress,
-    [0, 0.06, 0.55],
-    [0.6, 1, 0.7]
-  );
+  const glowOpacity = useTransform(progress, [0, 0.04, 0.55], [0.15, 0.5, 0.2]);
+  const glowScale = useTransform(progress, [0, 0.06, 0.55], [0.6, 1, 0.7]);
 
-  // ── Text slides in from right ──
+  // ── Text: on mobile, fade in centered (no slide); on desktop, slide from right ──
   const textX = useTransform(
     progress,
     [0.2, 0.55],
-    ["100%", "0%"]
+    isMobile ? ["0%", "0%"] : ["100%", "0%"]
   );
-  const textOpacity = useTransform(
-    progress,
-    [0.2, 0.5],
-    [0, 1]
-  );
+  const textOpacity = useTransform(progress, [0.2, 0.5], [0, 1]);
 
-  // ── Text backdrop (darkens right side for readability) ──
+  // ── Text backdrop ──
   const backdropOpacity = useTransform(
     progress,
     [0.16, 0.4],
@@ -110,17 +110,13 @@ export function HeroPortal() {
   );
 
   // ── Scroll hint ──
-  const scrollHintOpacity = useTransform(
-    progress,
-    [0, 0.06],
-    [1, 0]
-  );
+  const scrollHintOpacity = useTransform(progress, [0, 0.06], [1, 0]);
 
   return (
     <div
       ref={containerRef}
       className="relative -mt-16"
-      style={{ height: "220vh" }}
+      style={{ height: isMobile ? "160vh" : "220vh" }}
     >
       <div className="sticky top-0 flex h-screen w-full items-center overflow-hidden bg-black">
         {/* ── Flickering ambient glow ── */}
@@ -129,7 +125,7 @@ export function HeroPortal() {
           className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center"
         >
           <div
-            className="portal-flicker h-[700px] w-[700px] rounded-full"
+            className="portal-flicker h-[400px] w-[400px] rounded-full md:h-[700px] md:w-[700px]"
             style={{
               background:
                 "radial-gradient(circle, rgba(0,240,255,0.2) 0%, rgba(0,240,255,0.06) 35%, transparent 65%)",
@@ -137,12 +133,12 @@ export function HeroPortal() {
           />
         </motion.div>
 
-        {/* ── Portal container — zoom → swap → shift ── */}
+        {/* ── Portal container ── */}
         <motion.div
-          style={{ x: portalX, scale: portalScale }}
+          style={{ x: portalX, y: portalY, scale: portalScale, opacity: portalFade }}
           className="absolute inset-0 z-10 flex items-center justify-center"
         >
-          {/* Flickering first-frame image (on top, fades during swap phase) */}
+          {/* Flickering first-frame image */}
           <motion.div
             style={{ opacity: imageOpacity }}
             className="absolute inset-0 z-[1] flex items-center justify-center"
@@ -154,12 +150,12 @@ export function HeroPortal() {
                 width={720}
                 height={1040}
                 priority
-                className="h-[88vh] w-auto object-contain"
+                className="h-[65vh] w-auto object-contain md:h-[88vh]"
               />
             </div>
           </motion.div>
 
-          {/* Video underneath — identical dimensions, revealed during swap */}
+          {/* Video underneath — revealed during swap */}
           <motion.div
             style={{ opacity: videoOpacity }}
             className="flex items-center justify-center"
@@ -169,25 +165,25 @@ export function HeroPortal() {
               loop
               muted
               playsInline
-              className="h-[88vh] w-auto max-w-none object-contain"
+              className="h-[65vh] w-auto max-w-none object-contain md:h-[88vh]"
             >
               <source src="/videos/hero-portal-loop.mp4" type="video/mp4" />
             </video>
           </motion.div>
         </motion.div>
 
-        {/* ── Text backdrop gradient (darkens right side) ── */}
+        {/* ── Text backdrop gradient ── */}
         <motion.div
           style={{ opacity: backdropOpacity }}
-          className="pointer-events-none absolute inset-0 z-[15] bg-gradient-to-l from-black/75 via-black/35 to-transparent"
+          className="pointer-events-none absolute inset-0 z-[15] bg-gradient-to-t from-black/85 via-black/40 to-transparent md:bg-gradient-to-l md:from-black/75 md:via-black/35 md:to-transparent"
         />
 
-        {/* ── Text content — slides in from right ── */}
+        {/* ── Text content ── */}
         <motion.div
           style={{ x: textX, opacity: textOpacity }}
-          className="absolute inset-y-0 right-0 z-20 flex w-full items-center px-6 sm:px-10 md:w-[50%] md:px-12 lg:px-16"
+          className="absolute inset-x-0 bottom-0 z-20 flex items-end justify-center px-6 pb-24 md:inset-y-0 md:right-0 md:left-auto md:flex md:w-[50%] md:items-center md:justify-start md:px-12 md:pb-0 lg:px-16"
         >
-          <div>
+          <div className="text-center md:text-left">
             <p className="mb-4 font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.4em] text-cyan-neon/60">
               {SITE_CONFIG.location}
             </p>
@@ -207,7 +203,7 @@ export function HeroPortal() {
               {SITE_CONFIG.tagline}
             </p>
 
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row md:mt-10">
               <Link
                 href="/pricing"
                 className="group inline-flex items-center justify-center gap-2 bg-cyan-neon px-7 py-3.5 font-[family-name:var(--font-display)] tracking-wider text-dark-deep transition-all duration-300 hover:shadow-[0_0_40px_rgba(0,240,255,0.35)]"
